@@ -1,0 +1,1793 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Painel Programa Eleições 2026 — TRE-PB</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --azul-tre: #003A70;
+    --azul-medio: #004D99;
+    --azul-claro: #0066CC;
+    --dourado: #C8A84B;
+    --dourado-claro: #E2C97E;
+    --cinza-escuro: #1A1A2E;
+    --cinza-medio: #2D3561;
+    --bg: #F0F4FA;
+    --branco: #FFFFFF;
+    --verde: #1B7A3E;
+    --verde-claro: #E8F5EE;
+    --amarelo: #C8A84B;
+    --vermelho: #C0392B;
+    --vermelho-claro: #FDECEA;
+    --laranja: #D35400;
+    --laranja-claro: #FEF0E8;
+    --card-shadow: 0 4px 20px rgba(0,58,112,0.10);
+    --radius: 12px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--azul-tre);
+    min-height: 100vh;
+  }
+
+  /* ===== HEADER ===== */
+  header {
+    background: linear-gradient(135deg, var(--azul-tre) 0%, var(--azul-medio) 60%, var(--azul-claro) 100%);
+    color: white;
+    padding: 0 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 72px;
+    box-shadow: 0 4px 24px rgba(0,58,112,0.25);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .header-left {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .logo-box {
+    width: 44px;
+    height: 44px;
+    background: var(--dourado);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 800;
+    font-size: 14px;
+    color: var(--azul-tre);
+    letter-spacing: -0.5px;
+    flex-shrink: 0;
+  }
+
+  .header-title h1 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+    line-height: 1.2;
+  }
+
+  .header-title p {
+    font-size: 11px;
+    opacity: 0.75;
+    font-weight: 400;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+
+  .header-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  #current-date {
+    font-size: 12px;
+    opacity: 0.8;
+    font-weight: 500;
+  }
+
+  .btn-import {
+    background: var(--dourado);
+    color: var(--azul-tre);
+    border: none;
+    padding: 8px 18px;
+    border-radius: 8px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 12px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s;
+    letter-spacing: 0.3px;
+  }
+
+  .btn-import:hover {
+    background: var(--dourado-claro);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(200,168,75,0.4);
+  }
+
+  /* ===== NAVIGATION ===== */
+  nav {
+    background: var(--branco);
+    border-bottom: 2px solid rgba(0,58,112,0.08);
+    display: flex;
+    gap: 4px;
+    padding: 0 32px;
+    position: sticky;
+    top: 72px;
+    z-index: 99;
+    box-shadow: 0 2px 8px rgba(0,58,112,0.06);
+  }
+
+  .nav-tab {
+    padding: 14px 20px;
+    border: none;
+    background: none;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: #6B7BA4;
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    margin-bottom: -2px;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    white-space: nowrap;
+  }
+
+  .nav-tab:hover { color: var(--azul-claro); }
+
+  .nav-tab.active {
+    color: var(--azul-tre);
+    border-bottom-color: var(--dourado);
+  }
+
+  .nav-tab .tab-badge {
+    background: var(--azul-claro);
+    color: white;
+    font-size: 10px;
+    padding: 2px 6px;
+    border-radius: 10px;
+    font-weight: 700;
+  }
+
+  /* ===== MAIN ===== */
+  main {
+    padding: 28px 32px;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  .tab-content { display: none; animation: fadeIn 0.3s ease; }
+  .tab-content.active { display: block; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ===== SECTION HEADER ===== */
+  .section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 24px;
+  }
+
+  .section-title {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--azul-tre);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .section-title::before {
+    content: '';
+    width: 4px;
+    height: 24px;
+    background: var(--dourado);
+    border-radius: 2px;
+  }
+
+  /* ===== KPI CARDS ===== */
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    margin-bottom: 28px;
+  }
+
+  .kpi-card {
+    background: var(--branco);
+    border-radius: var(--radius);
+    padding: 20px 22px;
+    box-shadow: var(--card-shadow);
+    border-left: 4px solid var(--azul-claro);
+    transition: transform 0.2s, box-shadow 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .kpi-card::after {
+    content: '';
+    position: absolute;
+    top: -20px;
+    right: -20px;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: rgba(0,102,204,0.05);
+  }
+
+  .kpi-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px rgba(0,58,112,0.15);
+  }
+
+  .kpi-card.dourado { border-left-color: var(--dourado); }
+  .kpi-card.verde { border-left-color: var(--verde); }
+  .kpi-card.vermelho { border-left-color: var(--vermelho); }
+  .kpi-card.laranja { border-left-color: var(--laranja); }
+
+  .kpi-label {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: #7B8AB0;
+    margin-bottom: 8px;
+  }
+
+  .kpi-value {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 32px;
+    font-weight: 800;
+    color: var(--azul-tre);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+
+  .kpi-sub {
+    font-size: 12px;
+    color: #7B8AB0;
+    font-weight: 500;
+  }
+
+  .kpi-icon {
+    position: absolute;
+    top: 18px;
+    right: 20px;
+    font-size: 24px;
+    opacity: 0.2;
+  }
+
+  /* ===== CARDS ===== */
+  .card {
+    background: var(--branco);
+    border-radius: var(--radius);
+    box-shadow: var(--card-shadow);
+    overflow: hidden;
+    margin-bottom: 20px;
+  }
+
+  .card-header {
+    padding: 16px 22px;
+    border-bottom: 1px solid rgba(0,58,112,0.07);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .card-title {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--azul-tre);
+  }
+
+  .card-body { padding: 20px 22px; }
+
+  /* ===== TABLE ===== */
+  .table-wrap { overflow-x: auto; }
+  #contratos-table { min-width: 1600px; font-size: 12px; }
+  #contratos-table th { white-space: nowrap; font-size: 11px; padding: 8px 10px; }
+  #contratos-table td { padding: 8px 10px; vertical-align: top; }
+  #contratos-table tbody tr:hover { background: #F0F4FA; }
+  .badge-dourado { background: rgba(200,168,75,0.15); color: #8B6914; border: 1px solid rgba(200,168,75,0.3); }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+
+  thead tr {
+    background: linear-gradient(135deg, var(--azul-tre), var(--azul-medio));
+    color: white;
+  }
+
+  thead th {
+    padding: 12px 14px;
+    text-align: left;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    font-size: 11px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  tbody tr {
+    border-bottom: 1px solid rgba(0,58,112,0.06);
+    transition: background 0.15s;
+  }
+
+  tbody tr:hover { background: rgba(0,102,204,0.04); }
+
+  tbody td {
+    padding: 11px 14px;
+    color: #2D3A5A;
+    vertical-align: middle;
+  }
+
+  /* ===== BADGES ===== */
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+  }
+
+  .badge-verde { background: var(--verde-claro); color: var(--verde); }
+  .badge-amarelo { background: #FFF8E6; color: #92620A; }
+  .badge-vermelho { background: var(--vermelho-claro); color: var(--vermelho); }
+  .badge-azul { background: #E8F0FF; color: var(--azul-claro); }
+  .badge-cinza { background: #EAEEF5; color: #5A6A8A; }
+  .badge-laranja { background: var(--laranja-claro); color: var(--laranja); }
+
+  /* ===== PROGRESS BAR ===== */
+  .progress-wrap { background: #E8EEF8; border-radius: 8px; height: 8px; overflow: hidden; }
+  .progress-bar { height: 100%; border-radius: 8px; transition: width 0.6s ease; }
+  .progress-bar.azul { background: linear-gradient(90deg, var(--azul-claro), var(--azul-medio)); }
+  .progress-bar.verde { background: linear-gradient(90deg, #27AE60, var(--verde)); }
+  .progress-bar.amarelo { background: linear-gradient(90deg, #F39C12, #E2C97E); }
+  .progress-bar.vermelho { background: linear-gradient(90deg, var(--vermelho), #E74C3C); }
+  .progress-bar.dourado { background: linear-gradient(90deg, var(--dourado), var(--dourado-claro)); }
+
+  /* ===== GRID LAYOUTS ===== */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+
+  @media (max-width: 900px) {
+    .grid-2, .grid-3 { grid-template-columns: 1fr; }
+    main { padding: 16px; }
+    header { padding: 0 16px; }
+    nav { padding: 0 8px; overflow-x: auto; }
+  }
+
+  /* ===== ALERTS ===== */
+  .alert-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 14px 18px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    border-left: 4px solid;
+    background: var(--branco);
+    box-shadow: 0 2px 8px rgba(0,58,112,0.06);
+    transition: transform 0.2s;
+  }
+
+  .alert-item:hover { transform: translateX(3px); }
+  .alert-item.critico { border-left-color: var(--vermelho); background: var(--vermelho-claro); }
+  .alert-item.atencao { border-left-color: var(--laranja); background: var(--laranja-claro); }
+  .alert-item.info { border-left-color: var(--azul-claro); background: #EEF4FF; }
+  .alert-item.ok { border-left-color: var(--verde); background: var(--verde-claro); }
+
+  .alert-icon { font-size: 20px; flex-shrink: 0; margin-top: 1px; }
+  .alert-title { font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 13px; margin-bottom: 2px; }
+  .alert-desc { font-size: 12px; color: #4A5A7A; line-height: 1.5; }
+  .alert-date { font-size: 11px; color: #8A9AB5; margin-top: 4px; font-style: italic; }
+
+  /* ===== OKR ===== */
+  .okr-objective {
+    border-radius: var(--radius);
+    margin-bottom: 16px;
+    overflow: hidden;
+    box-shadow: var(--card-shadow);
+  }
+
+  .okr-obj-header {
+    background: linear-gradient(135deg, var(--azul-tre), var(--azul-medio));
+    color: white;
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .okr-obj-title {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .okr-obj-pct {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 24px;
+    font-weight: 800;
+    color: var(--dourado);
+  }
+
+  .okr-krs { background: var(--branco); }
+
+  .okr-kr-row {
+    padding: 14px 20px;
+    border-bottom: 1px solid rgba(0,58,112,0.06);
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .okr-kr-row:last-child { border-bottom: none; }
+
+  .okr-kr-name { flex: 1; font-size: 13px; color: #2D3A5A; font-weight: 500; }
+  .okr-kr-meta { font-size: 11px; color: #8A9AB5; margin-top: 2px; }
+  .okr-kr-bar { width: 180px; }
+  .okr-kr-pct { font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 14px; color: var(--azul-tre); min-width: 40px; text-align: right; }
+
+  /* ===== UPLOAD ===== */
+  .upload-zone {
+    border: 2px dashed rgba(0,58,112,0.25);
+    border-radius: var(--radius);
+    padding: 40px;
+    text-align: center;
+    background: rgba(0,102,204,0.02);
+    transition: all 0.2s;
+    cursor: pointer;
+  }
+
+  .upload-zone:hover, .upload-zone.drag-over {
+    border-color: var(--azul-claro);
+    background: rgba(0,102,204,0.06);
+  }
+
+  .upload-zone input[type=file] { display: none; }
+  .upload-icon { font-size: 48px; margin-bottom: 12px; opacity: 0.5; }
+  .upload-title { font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 15px; color: var(--azul-tre); margin-bottom: 6px; }
+  .upload-desc { font-size: 13px; color: #8A9AB5; }
+
+  .btn {
+    background: var(--azul-claro);
+    color: white;
+    border: none;
+    padding: 9px 18px;
+    border-radius: 8px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .btn:hover { background: var(--azul-medio); transform: translateY(-1px); }
+  .btn-sm { padding: 5px 12px; font-size: 11px; }
+  .btn-outline { background: none; border: 2px solid var(--azul-claro); color: var(--azul-claro); }
+  .btn-outline:hover { background: var(--azul-claro); color: white; }
+
+  /* ===== ORÇAMENTO ===== */
+  .orcamento-header {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+
+  .orc-kpi {
+    flex: 1;
+    min-width: 160px;
+    background: var(--branco);
+    border-radius: var(--radius);
+    padding: 18px 20px;
+    box-shadow: var(--card-shadow);
+    text-align: center;
+    border-top: 3px solid var(--azul-claro);
+  }
+
+  .orc-kpi.verde { border-top-color: var(--verde); }
+  .orc-kpi.vermelho { border-top-color: var(--vermelho); }
+  .orc-kpi.dourado { border-top-color: var(--dourado); }
+
+  .orc-kpi-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.7px; color: #8A9AB5; margin-bottom: 8px; }
+  .orc-kpi-value { font-family: 'Montserrat', sans-serif; font-size: 22px; font-weight: 800; color: var(--azul-tre); }
+
+  /* ===== CONTRATOS ===== */
+  .contrato-card {
+    background: var(--branco);
+    border-radius: var(--radius);
+    padding: 16px 20px;
+    box-shadow: var(--card-shadow);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    transition: transform 0.2s;
+  }
+
+  .contrato-card:hover { transform: translateX(4px); }
+
+  .contrato-num {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 800;
+    font-size: 13px;
+    color: var(--azul-claro);
+    min-width: 80px;
+  }
+
+  .contrato-info { flex: 1; }
+  .contrato-nome { font-weight: 600; font-size: 13px; color: var(--azul-tre); margin-bottom: 2px; }
+  .contrato-meta { font-size: 11px; color: #8A9AB5; }
+
+  .contrato-valor {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 15px;
+    color: var(--verde);
+    min-width: 130px;
+    text-align: right;
+  }
+
+  /* ===== EMPTY STATE ===== */
+  .empty-state {
+    text-align: center;
+    padding: 48px 24px;
+    color: #8A9AB5;
+  }
+
+  .empty-state .empty-icon { font-size: 48px; margin-bottom: 12px; opacity: 0.4; }
+  .empty-state .empty-title { font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 15px; color: #5A6A8A; margin-bottom: 6px; }
+  .empty-state .empty-desc { font-size: 13px; }
+
+  /* ===== FOOTER ===== */
+  footer {
+    text-align: center;
+    padding: 20px;
+    font-size: 11px;
+    color: #8A9AB5;
+    border-top: 1px solid rgba(0,58,112,0.08);
+    margin-top: 20px;
+  }
+
+  .divider { height: 1px; background: rgba(0,58,112,0.08); margin: 20px 0; }
+
+  /* Imported rows highlight */
+  .imported-row { background: rgba(27, 122, 62, 0.04) !important; }
+
+  /* ===== MODAL ===== */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,20,60,0.55);
+    z-index: 500;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(3px);
+    animation: fadeIn 0.2s ease;
+  }
+  .modal-overlay.open { display: flex; }
+
+  .modal {
+    background: var(--branco);
+    border-radius: 16px;
+    width: 100%;
+    max-width: 580px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 24px 80px rgba(0,20,60,0.3);
+    animation: slideUp 0.25s ease;
+  }
+
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .modal-header {
+    background: linear-gradient(135deg, var(--azul-tre), var(--azul-medio));
+    color: white;
+    padding: 20px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-radius: 16px 16px 0 0;
+  }
+
+  .modal-title {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .modal-close {
+    background: rgba(255,255,255,0.15);
+    border: none;
+    color: white;
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s;
+  }
+  .modal-close:hover { background: rgba(255,255,255,0.25); }
+
+  .modal-body { padding: 24px; }
+
+  .modal-footer {
+    padding: 16px 24px;
+    border-top: 1px solid rgba(0,58,112,0.08);
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+  }
+
+  /* ===== FORM ===== */
+  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .form-grid.col1 { grid-template-columns: 1fr; }
+
+  .form-group { display: flex; flex-direction: column; gap: 5px; }
+  .form-group.span2 { grid-column: span 2; }
+
+  .form-label {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    color: #5A6A8A;
+  }
+
+  .form-input, .form-select, .form-textarea {
+    border: 1.5px solid rgba(0,58,112,0.18);
+    border-radius: 8px;
+    padding: 9px 12px;
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    color: var(--azul-tre);
+    background: #FAFCFF;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    outline: none;
+    width: 100%;
+  }
+
+  .form-input:focus, .form-select:focus, .form-textarea:focus {
+    border-color: var(--azul-claro);
+    box-shadow: 0 0 0 3px rgba(0,102,204,0.12);
+    background: white;
+  }
+
+  .form-textarea { resize: vertical; min-height: 72px; }
+
+  .form-range-wrap { display: flex; align-items: center; gap: 10px; }
+  .form-range { flex: 1; accent-color: var(--azul-claro); }
+  .form-range-val {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    color: var(--azul-claro);
+    min-width: 36px;
+    text-align: right;
+  }
+
+  .btn-cancelar {
+    background: #EAEEF5;
+    color: #5A6A8A;
+    border: none;
+    padding: 9px 18px;
+    border-radius: 8px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    font-size: 13px;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .btn-cancelar:hover { background: #D5DCE8; }
+
+  .btn-salvar {
+    background: linear-gradient(135deg, var(--azul-tre), var(--azul-claro));
+    color: white;
+    border: none;
+    padding: 9px 22px;
+    border-radius: 8px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    cursor: pointer;
+    transition: opacity 0.2s, transform 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .btn-salvar:hover { opacity: 0.9; transform: translateY(-1px); }
+
+  .btn-novo {
+    background: linear-gradient(135deg, var(--azul-tre), var(--azul-claro));
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 12px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s;
+  }
+  .btn-novo:hover { opacity: 0.9; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,58,112,0.2); }
+
+  .btn-excluir {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #C0392B;
+    font-size: 14px;
+    padding: 4px 6px;
+    border-radius: 6px;
+    opacity: 0.5;
+    transition: opacity 0.2s, background 0.2s;
+  }
+  .btn-excluir:hover { opacity: 1; background: var(--vermelho-claro); }
+
+  .btn-editar {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--azul-claro);
+    font-size: 14px;
+    padding: 4px 6px;
+    border-radius: 6px;
+    opacity: 0.5;
+    transition: opacity 0.2s, background 0.2s;
+  }
+  .btn-editar:hover { opacity: 1; background: #E8F0FF; }
+
+  /* KR sub-form */
+  .kr-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 10px; }
+  .kr-item {
+    background: #F5F8FF;
+    border: 1px solid rgba(0,58,112,0.1);
+    border-radius: 8px;
+    padding: 12px 14px;
+    position: relative;
+  }
+  .kr-item-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+  .kr-item-title { font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 11px; color: var(--azul-claro); text-transform: uppercase; }
+
+  .btn-add-kr {
+    background: #E8F0FF;
+    color: var(--azul-claro);
+    border: 1.5px dashed var(--azul-claro);
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 12px;
+    cursor: pointer;
+    width: 100%;
+    transition: background 0.2s;
+  }
+  .btn-add-kr:hover { background: #D0E4FF; }
+
+  .divider-form { height: 1px; background: rgba(0,58,112,0.08); margin: 16px 0; }
+
+  /* Edit mode na tabela */
+  .acoes-td { white-space: nowrap; }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="header-left">
+    <div class="logo-box">TRE<br>PB</div>
+    <div class="header-title">
+      <h1>Painel Programa Eleições 2026</h1>
+      <p>Tribunal Regional Eleitoral da Paraíba · SEGEM / SEIM</p>
+    </div>
+  </div>
+  <div class="header-right" style="display:flex;align-items:center;gap:12px;">
+    <span id="current-date"></span>
+    <button onclick="exportarComDados()" style="background:var(--dourado);color:var(--azul-tre);border:none;border-radius:10px;padding:9px 18px;font-family:'Montserrat',sans-serif;font-weight:700;font-size:12px;cursor:pointer;display:flex;align-items:center;gap:6px;white-space:nowrap;box-shadow:0 2px 8px rgba(0,0,0,0.15);">
+      📤 Exportar com meus dados
+    </button>
+  </div>
+</header>
+
+<!-- NAVIGATION -->
+<nav>
+  <button class="nav-tab active" onclick="showTab('overview')" id="tab-overview">
+    🏠 Visão Geral
+  </button>
+  <button class="nav-tab" onclick="showTab('projetos')" id="tab-projetos">
+    📋 Projetos <span class="tab-badge" id="badge-projetos">13</span>
+  </button>
+  <button class="nav-tab" onclick="showTab('okrs')" id="tab-okrs">
+    🎯 OKRs
+  </button>
+  <button class="nav-tab" onclick="showTab('orcamento')" id="tab-orcamento">
+    💰 Orçamento
+  </button>
+  <button class="nav-tab" onclick="showTab('contratos')" id="tab-contratos">
+    📄 Contratações
+  </button>
+  <button class="nav-tab" onclick="showTab('alertas')" id="tab-alertas">
+    🔔 Alertas <span class="tab-badge" id="badge-alertas" style="background:#C0392B">3</span>
+  </button>
+  <button class="nav-tab" onclick="showTab('importar')" id="tab-importar">
+    📂 Dados
+  </button>
+</nav>
+
+<!-- MAIN -->
+<main>
+
+  <!-- ========== ABA: VISÃO GERAL ========== -->
+  <div id="tab-content-overview" class="tab-content active">
+    <div class="section-header">
+      <div class="section-title">Visão Geral · Programa Eleições 2026</div>
+      <span style="font-size:12px;color:#8A9AB5;">Atualizado em <span id="last-update">—</span></span>
+    </div>
+
+    <div class="kpi-grid">
+      <div class="kpi-card">
+        <div class="kpi-icon">📋</div>
+        <div class="kpi-label">Total de Projetos</div>
+        <div class="kpi-value" id="kpi-total-proj">13</div>
+        <div class="kpi-sub">Programa Eleições 2026</div>
+      </div>
+      <div class="kpi-card verde">
+        <div class="kpi-icon">✅</div>
+        <div class="kpi-label">Em Andamento</div>
+        <div class="kpi-value" id="kpi-andamento" style="color:var(--verde)">7</div>
+        <div class="kpi-sub">projetos ativos</div>
+      </div>
+      <div class="kpi-card amarelo">
+        <div class="kpi-icon">⏳</div>
+        <div class="kpi-label">A Iniciar</div>
+        <div class="kpi-value" id="kpi-a-iniciar" style="color:var(--dourado)">4</div>
+        <div class="kpi-sub">projetos planejados</div>
+      </div>
+      <div class="kpi-card vermelho">
+        <div class="kpi-icon">⚠️</div>
+        <div class="kpi-label">Em Alerta</div>
+        <div class="kpi-value" id="kpi-alerta" style="color:var(--vermelho)">2</div>
+        <div class="kpi-sub">requer atenção</div>
+      </div>
+      <div class="kpi-card dourado">
+        <div class="kpi-icon">💰</div>
+        <div class="kpi-label">Orçamento Total</div>
+        <div class="kpi-value" style="font-size:20px;color:var(--dourado)" id="kpi-orc-total">R$ —</div>
+        <div class="kpi-sub">dotação 2026</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-icon">📄</div>
+        <div class="kpi-label">Contratações</div>
+        <div class="kpi-value" id="kpi-contratos">—</div>
+        <div class="kpi-sub">processos</div>
+      </div>
+    </div>
+
+    <!-- Status dos Projetos + Alertas recentes -->
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">📊 Status por Projeto</div>
+        </div>
+        <div class="card-body">
+          <div id="overview-projetos-list">
+            <!-- preenchido via JS -->
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">🔔 Alertas Recentes</div>
+          <button class="btn btn-sm" onclick="showTab('alertas')">Ver todos</button>
+        </div>
+        <div class="card-body" id="overview-alertas">
+          <!-- preenchido via JS -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== ABA: PROJETOS ========== -->
+  <div id="tab-content-projetos" class="tab-content">
+    <div class="section-header">
+      <div class="section-title">Projetos do Programa</div>
+      <div style="display:flex;gap:8px;">
+        <select id="filtro-status" onchange="renderProjetos()" style="border:1px solid rgba(0,58,112,0.2);border-radius:8px;padding:7px 12px;font-family:'Montserrat',sans-serif;font-size:12px;font-weight:600;color:var(--azul-tre);">
+          <option value="">Todos os Status</option>
+          <option value="Em Andamento">Em Andamento</option>
+          <option value="A Iniciar">A Iniciar</option>
+          <option value="Alerta">Alerta</option>
+          <option value="Concluído">Concluído</option>
+        </select>
+        <button class="btn btn-sm" onclick="showTab('importar')">⬆ Importar</button>
+        <button class="btn-novo" onclick="abrirModalProjeto()">✏️ Novo Projeto</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Projeto</th>
+              <th>Unidade</th>
+              <th>Gestor(a)</th>
+              <th>Status</th>
+              <th>Progresso</th>
+              <th>Prazo</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody id="projetos-tbody">
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== ABA: OKRs ========== -->
+  <div id="tab-content-okrs" class="tab-content">
+    <div class="section-header">
+      <div class="section-title">OKRs · Programa Eleições 2026</div>
+      <div style="display:flex;gap:8px;">
+        <button class="btn btn-sm" onclick="showTab('importar')">⬆ Importar OKRs</button>
+        <button class="btn-novo" onclick="abrirModalOKR()">✏️ Novo Objetivo</button>
+      </div>
+    </div>
+    <div id="okrs-container"></div>
+  </div>
+
+  <!-- ========== ABA: ORÇAMENTO ========== -->
+  <div id="tab-content-orcamento" class="tab-content">
+    <div class="section-header">
+      <div class="section-title">Orçamento · Programa Eleições 2026</div>
+      <button class="btn-novo" onclick="abrirModalOrcamento()">✏️ Editar Orçamento</button>
+    </div>
+
+    <!-- KPI consolidado -->
+    <div class="orcamento-header">
+      <div class="orc-kpi dourado">
+        <div class="orc-kpi-label">Dotação Total do Programa</div>
+        <div class="orc-kpi-value" id="orc-total" style="color:var(--dourado)">R$ 17.441.545,70</div>
+      </div>
+      <div class="orc-kpi verde">
+        <div class="orc-kpi-label">Empenhado</div>
+        <div class="orc-kpi-value" id="orc-empenhado" style="color:var(--verde)">R$ —</div>
+      </div>
+      <div class="orc-kpi">
+        <div class="orc-kpi-label">Liquidado</div>
+        <div class="orc-kpi-value" id="orc-liquidado" style="color:var(--azul-claro)">R$ —</div>
+      </div>
+      <div class="orc-kpi vermelho">
+        <div class="orc-kpi-label">Saldo Disponível</div>
+        <div class="orc-kpi-value" id="orc-saldo" style="color:var(--vermelho)">R$ —</div>
+      </div>
+    </div>
+
+    <!-- Dois planos orçamentários lado a lado -->
+    <div class="grid-2" style="margin-bottom:20px;">
+
+      <!-- Plano 1 -->
+      <div class="card">
+        <div class="card-header" style="background:linear-gradient(135deg,var(--azul-tre),var(--azul-medio));color:white;border-radius:12px 12px 0 0;">
+          <div class="card-title" style="color:white;">🗳️ Plano Orçamentário 1</div>
+          <span class="badge" style="background:rgba(255,255,255,0.2);color:white;font-size:11px;">Eleições Gerais</span>
+        </div>
+        <div class="card-body">
+          <div style="margin-bottom:18px;">
+            <div class="orc-kpi-label" style="margin-bottom:6px;">Plano Orçamentário</div>
+            <div style="font-family:'Montserrat',sans-serif;font-weight:700;font-size:14px;color:var(--azul-tre);">Despesas 1º e 2º Turno das Eleições Gerais</div>
+          </div>
+          <div class="grid-2" style="gap:12px;margin-bottom:16px;">
+            <div style="background:#F0F4FA;border-radius:10px;padding:14px;text-align:center;">
+              <div class="orc-kpi-label">Dotação</div>
+              <div style="font-family:'Montserrat',sans-serif;font-weight:800;font-size:18px;color:var(--azul-tre);" id="p1-dotacao">R$ 17.101.545,70</div>
+            </div>
+            <div style="background:#F0F4FA;border-radius:10px;padding:14px;text-align:center;">
+              <div class="orc-kpi-label">Empenhado</div>
+              <div style="font-family:'Montserrat',sans-serif;font-weight:800;font-size:18px;color:var(--verde);" id="p1-empenhado">R$ —</div>
+            </div>
+            <div style="background:#F0F4FA;border-radius:10px;padding:14px;text-align:center;">
+              <div class="orc-kpi-label">Liquidado</div>
+              <div style="font-family:'Montserrat',sans-serif;font-weight:800;font-size:18px;color:var(--azul-claro);" id="p1-liquidado">R$ —</div>
+            </div>
+            <div style="background:#F0F4FA;border-radius:10px;padding:14px;text-align:center;">
+              <div class="orc-kpi-label">Saldo</div>
+              <div style="font-family:'Montserrat',sans-serif;font-weight:800;font-size:18px;color:var(--vermelho);" id="p1-saldo">R$ 17.101.545,70</div>
+            </div>
+          </div>
+          <div>
+            <div style="display:flex;justify-content:space-between;font-size:11px;color:#8A9AB5;margin-bottom:4px;">
+              <span>Execução</span>
+              <span id="p1-exec-pct">0%</span>
+            </div>
+            <div class="progress-wrap"><div class="progress-bar azul" id="p1-barra" style="width:0%"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Plano 2 -->
+      <div class="card">
+        <div class="card-header" style="background:linear-gradient(135deg,var(--dourado),var(--dourado-claro));color:var(--azul-tre);border-radius:12px 12px 0 0;">
+          <div class="card-title" style="color:var(--azul-tre);">🔧 Plano Orçamentário 2</div>
+          <span class="badge" style="background:rgba(0,58,112,0.15);color:var(--azul-tre);font-size:11px;">Manutenção de Urnas</span>
+        </div>
+        <div class="card-body">
+          <div style="margin-bottom:18px;">
+            <div class="orc-kpi-label" style="margin-bottom:6px;">Plano Orçamentário</div>
+            <div style="font-family:'Montserrat',sans-serif;font-weight:700;font-size:14px;color:var(--azul-tre);">Manutenção Preventiva de Urnas</div>
+          </div>
+          <div class="grid-2" style="gap:12px;margin-bottom:16px;">
+            <div style="background:#FDF8EE;border-radius:10px;padding:14px;text-align:center;">
+              <div class="orc-kpi-label">Dotação</div>
+              <div style="font-family:'Montserrat',sans-serif;font-weight:800;font-size:18px;color:var(--azul-tre);" id="p2-dotacao">R$ 340.000,00</div>
+            </div>
+            <div style="background:#FDF8EE;border-radius:10px;padding:14px;text-align:center;">
+              <div class="orc-kpi-label">Empenhado</div>
+              <div style="font-family:'Montserrat',sans-serif;font-weight:800;font-size:18px;color:var(--verde);" id="p2-empenhado">R$ —</div>
+            </div>
+            <div style="background:#FDF8EE;border-radius:10px;padding:14px;text-align:center;">
+              <div class="orc-kpi-label">Liquidado</div>
+              <div style="font-family:'Montserrat',sans-serif;font-weight:800;font-size:18px;color:var(--azul-claro);" id="p2-liquidado">R$ —</div>
+            </div>
+            <div style="background:#FDF8EE;border-radius:10px;padding:14px;text-align:center;">
+              <div class="orc-kpi-label">Saldo</div>
+              <div style="font-family:'Montserrat',sans-serif;font-weight:800;font-size:18px;color:var(--vermelho);" id="p2-saldo">R$ 340.000,00</div>
+            </div>
+          </div>
+          <div>
+            <div style="display:flex;justify-content:space-between;font-size:11px;color:#8A9AB5;margin-bottom:4px;">
+              <span>Execução</span>
+              <span id="p2-exec-pct">0%</span>
+            </div>
+            <div class="progress-wrap"><div class="progress-bar dourado" id="p2-barra" style="width:0%"></div></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Observações / histórico -->
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">📝 Observações e Histórico de Atualizações</div>
+        <button class="btn-novo" onclick="adicionarObsOrc()">+ Observação</button>
+      </div>
+      <div class="card-body" id="orc-obs-lista">
+        <div class="empty-state" style="padding:24px;">
+          <div class="empty-icon" style="font-size:32px;">📝</div>
+          <div class="empty-title">Nenhuma observação registrada</div>
+          <div class="empty-desc">Registre atualizações, notas de empenho, contingenciamentos etc.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== ABA: CONTRATAÇÕES ========== -->
+  <div id="tab-content-contratos" class="tab-content">
+    <div class="section-header">
+      <div class="section-title">Contratações · Programa Eleições 2026</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;">
+        <select id="filtro-projeto-ct" onchange="renderContratos()" style="border:1px solid rgba(0,58,112,0.2);border-radius:8px;padding:7px 12px;font-family:'Montserrat',sans-serif;font-size:12px;font-weight:600;color:var(--azul-tre);">
+          <option value="">Todos os Projetos</option>
+          <option value="Auditoria de Urnas">Auditoria de Urnas</option>
+          <option value="Plano de Comunicação">Plano de Comunicação</option>
+          <option value="Logística e Apoio">Logística e Apoio</option>
+          <option value="Mesários">Mesários</option>
+          <option value="Preparação de Urnas">Preparação de Urnas</option>
+          <option value="Suporte TIC">Suporte TIC</option>
+        </select>
+        <select id="filtro-tipo-ct" onchange="renderContratos()" style="border:1px solid rgba(0,58,112,0.2);border-radius:8px;padding:7px 12px;font-family:'Montserrat',sans-serif;font-size:12px;font-weight:600;color:var(--azul-tre);">
+          <option value="">Todos os Tipos</option>
+          <option value="Serviços">Serviços</option>
+          <option value="Aquisição">Aquisição</option>
+          <option value="TSE">TSE</option>
+          <option value="Ata de Registro de Preços">Ata de Registro de Preços</option>
+        </select>
+        <select id="filtro-pacont-ct" onchange="renderContratos()" style="border:1px solid rgba(0,58,112,0.2);border-radius:8px;padding:7px 12px;font-family:'Montserrat',sans-serif;font-size:12px;font-weight:600;color:var(--azul-tre);">
+          <option value="">PACONT: Todos</option>
+          <option value="Sim">No PACONT</option>
+          <option value="Não">Fora do PACONT</option>
+        </select>
+        <button class="btn-novo" onclick="abrirModalContrato()">✏️ Nova Contratação</button>
+        <button class="btn btn-sm" style="background:#fff;border:1px solid var(--vermelho);color:var(--vermelho);font-weight:700;" onclick="resetarContratos()">🔄 Redefinir dados</button>
+      </div>
+    </div>
+
+    <!-- KPIs -->
+    <div class="kpi-grid" style="grid-template-columns:repeat(5,1fr);margin-bottom:20px;">
+      <div class="kpi-card">
+        <div class="kpi-label">Total de Itens</div>
+        <div class="kpi-value" id="ct-total">—</div>
+      </div>
+      <div class="kpi-card verde">
+        <div class="kpi-label">No PACONT</div>
+        <div class="kpi-value" id="ct-pacont" style="color:var(--verde)">—</div>
+      </div>
+      <div class="kpi-card amarelo">
+        <div class="kpi-label">Com Processo SEI</div>
+        <div class="kpi-value" id="ct-comsei" style="color:var(--dourado)">—</div>
+      </div>
+      <div class="kpi-card dourado">
+        <div class="kpi-label">Valor Estimado Total</div>
+        <div class="kpi-value" id="ct-valor-total" style="font-size:16px;color:var(--dourado)">—</div>
+      </div>
+      <div class="kpi-card verde">
+        <div class="kpi-label">Valor Contratado</div>
+        <div class="kpi-value" id="ct-valor-contratado" style="font-size:16px;color:var(--verde)">—</div>
+      </div>
+    </div>
+
+    <!-- Tabela principal -->
+    <div class="card">
+      <div class="table-wrap">
+        <table id="contratos-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Projeto</th>
+              <th>Tipo</th>
+              <th>Descrição Detalhada</th>
+              <th>Qtd.</th>
+              <th>Unid.</th>
+              <th>Valor Unit. Est.</th>
+              <th>Valor Total Est.</th>
+              <th>Processo SEI</th>
+              <th>PACONT?</th>
+              <th>DL DFD</th>
+              <th>DL ETP</th>
+              <th>DL TR</th>
+              <th>Prog. Orç. (R$)</th>
+              <th>Tipo Orç.</th>
+              <th>DFD</th>
+              <th>ETP/TR/Riscos</th>
+              <th>Empenho</th>
+              <th>Valor Contratado</th>
+              <th>Valor Executado</th>
+              <th>% Exec.</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody id="contratos-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== ABA: ALERTAS ========== -->
+  <div id="tab-content-alertas" class="tab-content">
+    <div class="section-header">
+      <div class="section-title">Central de Alertas</div>
+      <div style="display:flex;gap:8px;">
+        <select id="filtro-alerta" onchange="renderAlertas()" style="border:1px solid rgba(0,58,112,0.2);border-radius:8px;padding:7px 12px;font-family:'Montserrat',sans-serif;font-size:12px;font-weight:600;color:var(--azul-tre);">
+          <option value="">Todos</option>
+          <option value="critico">Crítico</option>
+          <option value="atencao">Atenção</option>
+          <option value="info">Informativo</option>
+          <option value="ok">OK</option>
+        </select>
+        <button class="btn-novo" onclick="abrirModalAlerta()">✏️ Novo Alerta</button>
+      </div>
+    </div>
+
+    <div id="alertas-container"></div>
+  </div>
+
+  <!-- ========== ABA: DADOS ========== -->
+  <div id="tab-content-importar" class="tab-content">
+    <div class="section-header">
+      <div class="section-title">Importação de Dados</div>
+    </div>
+
+    <div class="grid-2">
+      <div>
+        <div class="card" style="margin-bottom:20px">
+          <div class="card-header"><div class="card-title">📋 Importar Projetos</div></div>
+          <div class="card-body">
+            <div class="upload-zone" id="zone-projetos" onclick="document.getElementById('file-projetos').click()">
+              <input type="file" id="file-projetos" accept=".csv" onchange="importCSV(this,'projetos')">
+              <div class="upload-icon">📋</div>
+              <div class="upload-title">Projetos do Programa</div>
+              <div class="upload-desc">Arraste um CSV ou clique para selecionar<br>Colunas: Projeto, Unidade, Gestor, Status, Progresso (%), Prazo, Prioridade</div>
+            </div>
+            <div style="margin-top:12px;padding:12px;background:#F0F4FA;border-radius:8px;font-size:11px;color:#5A6A8A;">
+              <strong>Formato esperado (CSV):</strong><br>
+              Projeto; Unidade; Gestor; Status; Progresso; Prazo; Prioridade
+            </div>
+          </div>
+        </div>
+
+        <div class="card" style="margin-bottom:20px">
+          <div class="card-header"><div class="card-title">💰 Importar Orçamento</div></div>
+          <div class="card-body">
+            <div class="upload-zone" onclick="document.getElementById('file-orcamento').click()">
+              <input type="file" id="file-orcamento" accept=".csv" onchange="importCSV(this,'orcamento')">
+              <div class="upload-icon">💰</div>
+              <div class="upload-title">Execução Orçamentária</div>
+              <div class="upload-desc">Colunas: Projeto; Dotação; Empenhado; Liquidado</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="card" style="margin-bottom:20px">
+          <div class="card-header"><div class="card-title">📄 Importar Contratações</div></div>
+          <div class="card-body">
+            <div class="upload-zone" onclick="document.getElementById('file-contratos').click()">
+              <input type="file" id="file-contratos" accept=".csv" onchange="importCSV(this,'contratos')">
+              <div class="upload-icon">📄</div>
+              <div class="upload-title">Contratos e Processos</div>
+              <div class="upload-desc">Colunas: Número; Nome; Fornecedor; Valor; Status; Vencimento; Projeto</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card" style="margin-bottom:20px">
+          <div class="card-header"><div class="card-title">🎯 Importar OKRs</div></div>
+          <div class="card-body">
+            <div class="upload-zone" onclick="document.getElementById('file-okrs').click()">
+              <input type="file" id="file-okrs" accept=".csv" onchange="importCSV(this,'okrs')">
+              <div class="upload-icon">🎯</div>
+              <div class="upload-title">Objetivos e Resultados-Chave</div>
+              <div class="upload-desc">Colunas: Objetivo; KR; Meta; Atual; Unidade</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header"><div class="card-title">ℹ️ Status das Importações</div></div>
+          <div class="card-body" id="import-status-list">
+            <div class="empty-state">
+              <div class="empty-icon">📂</div>
+              <div class="empty-title">Nenhum arquivo importado</div>
+              <div class="empty-desc">Importe planilhas CSV para preencher o painel automaticamente</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><div class="card-title">💡 Dica: Como preparar suas planilhas</div></div>
+      <div class="card-body">
+        <div class="grid-3" style="gap:12px">
+          <div style="background:#F0F4FA;border-radius:8px;padding:14px;">
+            <div style="font-family:'Montserrat',sans-serif;font-weight:700;font-size:12px;color:var(--azul-tre);margin-bottom:6px;">📋 Projetos.csv</div>
+            <div style="font-size:11px;color:#5A6A8A;line-height:1.8;font-family:monospace;">Projeto; Unidade; Gestor<br>Status; Progresso; Prazo<br>Prioridade</div>
+          </div>
+          <div style="background:#F0F4FA;border-radius:8px;padding:14px;">
+            <div style="font-family:'Montserrat',sans-serif;font-weight:700;font-size:12px;color:var(--azul-tre);margin-bottom:6px;">💰 Orcamento.csv</div>
+            <div style="font-size:11px;color:#5A6A8A;line-height:1.8;font-family:monospace;">Projeto; Dotação<br>Empenhado; Liquidado</div>
+          </div>
+          <div style="background:#F0F4FA;border-radius:8px;padding:14px;">
+            <div style="font-family:'Montserrat',sans-serif;font-weight:700;font-size:12px;color:var(--azul-tre);margin-bottom:6px;">🎯 OKRs.csv</div>
+            <div style="font-size:11px;color:#5A6A8A;line-height:1.8;font-family:monospace;">Objetivo; KR; Meta<br>Atual; Unidade</div>
+          </div>
+        </div>
+        <div style="margin-top:12px;font-size:12px;color:#8A9AB5;">
+          ✅ Salve suas planilhas como CSV (UTF-8) com separador ponto-e-vírgula (;) &nbsp;·&nbsp; Use ponto (.) como decimal nos valores
+        </div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<!-- ===================== MODAIS ===================== -->
+
+<!-- MODAL: Novo Projeto -->
+<div class="modal-overlay" id="modal-projeto">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">📋 <span id="modal-projeto-titulo">Novo Projeto</span></div>
+      <button class="modal-close" onclick="fecharModal('modal-projeto')">✕</button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="proj-edit-idx" value="">
+      <div class="form-grid">
+        <div class="form-group span2">
+          <label class="form-label">Nome do Projeto *</label>
+          <input class="form-input" id="proj-nome" placeholder="Ex: Gestão de Zonas Eleitorais">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Unidade Responsável *</label>
+          <input class="form-input" id="proj-unidade" placeholder="Ex: SEGEM/SEIM">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Gestor(a) *</label>
+          <input class="form-input" id="proj-gestor" placeholder="Nome do(a) gestor(a)">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Status</label>
+          <select class="form-select" id="proj-status">
+            <option value="A Iniciar">A Iniciar</option>
+            <option value="Em Andamento">Em Andamento</option>
+            <option value="Alerta">Alerta</option>
+            <option value="Concluído">Concluído</option>
+            <option value="Suspenso">Suspenso</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Prioridade</label>
+          <select class="form-select" id="proj-prioridade">
+            <option value="Alta">Alta</option>
+            <option value="Média">Média</option>
+            <option value="Baixa">Baixa</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Prazo</label>
+          <input class="form-input" type="date" id="proj-prazo">
+        </div>
+        <div class="form-group span2">
+          <label class="form-label">Progresso: <span id="proj-prog-val">0</span>%</label>
+          <div class="form-range-wrap">
+            <input type="range" class="form-range" id="proj-progresso" min="0" max="100" value="0"
+              oninput="document.getElementById('proj-prog-val').textContent=this.value;document.getElementById('proj-prog-display').textContent=this.value+'%'">
+            <span class="form-range-val" id="proj-prog-display">0%</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-cancelar" onclick="fecharModal('modal-projeto')">Cancelar</button>
+      <button class="btn-salvar" onclick="salvarProjeto()">💾 Salvar Projeto</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: Novo OKR -->
+<div class="modal-overlay" id="modal-okr">
+  <div class="modal" style="max-width:640px">
+    <div class="modal-header">
+      <div class="modal-title">🎯 <span id="modal-okr-titulo">Novo Objetivo (OKR)</span></div>
+      <button class="modal-close" onclick="fecharModal('modal-okr')">✕</button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="okr-edit-idx" value="">
+      <div class="form-grid col1">
+        <div class="form-group">
+          <label class="form-label">Objetivo *</label>
+          <input class="form-input" id="okr-objetivo" placeholder="Ex: O1 – Garantir a infraestrutura tecnológica para as Eleições 2026">
+        </div>
+      </div>
+      <div class="divider-form"></div>
+      <div style="font-family:'Montserrat',sans-serif;font-weight:700;font-size:12px;color:var(--azul-tre);margin-bottom:10px;">📌 Resultados-Chave (KRs)</div>
+      <div class="kr-list" id="kr-list"></div>
+      <button class="btn-add-kr" onclick="addKRField()">+ Adicionar Resultado-Chave</button>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-cancelar" onclick="fecharModal('modal-okr')">Cancelar</button>
+      <button class="btn-salvar" onclick="salvarOKR()">💾 Salvar OKR</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: Orçamento -->
+<div class="modal-overlay" id="modal-orcamento">
+  <div class="modal" style="max-width:640px">
+    <div class="modal-header">
+      <div class="modal-title">💰 Atualizar Execução Orçamentária</div>
+      <button class="modal-close" onclick="fecharModal('modal-orcamento')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div style="font-family:'Montserrat',sans-serif;font-weight:700;font-size:12px;color:var(--azul-claro);text-transform:uppercase;letter-spacing:0.6px;margin-bottom:14px;">🗳️ Plano 1 — Despesas 1º e 2º Turno das Eleições Gerais</div>
+      <div class="form-grid" style="margin-bottom:20px;">
+        <div class="form-group">
+          <label class="form-label">Dotação (R$)</label>
+          <input class="form-input" type="number" id="orc-p1-dotacao" value="17101545.70" min="0" step="0.01">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Empenhado (R$)</label>
+          <input class="form-input" type="number" id="orc-p1-empenhado" placeholder="0,00" min="0" step="0.01">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Liquidado (R$)</label>
+          <input class="form-input" type="number" id="orc-p1-liquidado" placeholder="0,00" min="0" step="0.01">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Pago (R$)</label>
+          <input class="form-input" type="number" id="orc-p1-pago" placeholder="0,00" min="0" step="0.01">
+        </div>
+      </div>
+      <div class="divider-form"></div>
+      <div style="font-family:'Montserrat',sans-serif;font-weight:700;font-size:12px;color:var(--dourado);text-transform:uppercase;letter-spacing:0.6px;margin-bottom:14px;">🔧 Plano 2 — Manutenção Preventiva de Urnas</div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label class="form-label">Dotação (R$)</label>
+          <input class="form-input" type="number" id="orc-p2-dotacao" value="340000.00" min="0" step="0.01">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Empenhado (R$)</label>
+          <input class="form-input" type="number" id="orc-p2-empenhado" placeholder="0,00" min="0" step="0.01">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Liquidado (R$)</label>
+          <input class="form-input" type="number" id="orc-p2-liquidado" placeholder="0,00" min="0" step="0.01">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Pago (R$)</label>
+          <input class="form-input" type="number" id="orc-p2-pago" placeholder="0,00" min="0" step="0.01">
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-cancelar" onclick="fecharModal('modal-orcamento')">Cancelar</button>
+      <button class="btn-salvar" onclick="salvarOrcamento()">💾 Salvar</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: Nova Contratação -->
+<div class="modal-overlay" id="modal-contrato">
+  <div class="modal" style="max-width:700px">
+    <div class="modal-header">
+      <div class="modal-title">📄 <span id="modal-ct-titulo">Nova Contratação</span></div>
+      <button class="modal-close" onclick="fecharModal('modal-contrato')">✕</button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="ct-edit-idx" value="">
+      <div class="form-grid">
+        <div class="form-group">
+          <label class="form-label">Projeto *</label>
+          <select class="form-select" id="ct-projeto">
+            <option value="">Selecione...</option>
+            <option>Auditoria de Urnas</option>
+            <option>Plano de Comunicação</option>
+            <option>Logística e Apoio</option>
+            <option>Mesários</option>
+            <option>Preparação de Urnas</option>
+            <option>Suporte TIC</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Tipo de Contratação *</label>
+          <select class="form-select" id="ct-tipo">
+            <option value="">Selecione...</option>
+            <option>Serviços</option>
+            <option>Aquisição</option>
+            <option>TSE</option>
+            <option>Ata de Registro de Preços</option>
+          </select>
+        </div>
+        <div class="form-group span2">
+          <label class="form-label">Descrição Detalhada *</label>
+          <textarea class="form-textarea" id="ct-descricao" placeholder="Descreva o objeto da contratação..."></textarea>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Quantidade Necessária</label>
+          <input class="form-input" id="ct-quantidade" placeholder="Ex: 2">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Unidade de Medida</label>
+          <input class="form-input" id="ct-unidade" placeholder="Ex: und, conjunto, m²">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Valor Unit. Estimado (R$)</label>
+          <input class="form-input" type="number" id="ct-valor-unit" placeholder="0,00" min="0" step="0.01">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Valor Total Estimado (R$)</label>
+          <input class="form-input" type="number" id="ct-valor-total-field" placeholder="0,00" min="0" step="0.01">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Processo SEI</label>
+          <input class="form-input" id="ct-sei" placeholder="Ex: 0001156-48.2026.6.15.8000">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Está no PACONT?</label>
+          <select class="form-select" id="ct-pacont-sel">
+            <option value="">—</option>
+            <option value="Sim">Sim</option>
+            <option value="Não">Não</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Data Limite DFD</label>
+          <input class="form-input" id="ct-dl-dfd" placeholder="Ex: 23/3/26">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Data Limite ETP</label>
+          <input class="form-input" id="ct-dl-etp" placeholder="Ex: 23/3/26">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Data Limite TR</label>
+          <input class="form-input" id="ct-dl-tr" placeholder="Ex: 23/3/26">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Prog. Orçamentária (R$)</label>
+          <input class="form-input" type="number" id="ct-prog-orc" placeholder="0,00" min="0" step="0.01">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Tipo do Orçamento</label>
+          <input class="form-input" id="ct-tipo-orc" placeholder="Ex: Ordinário, Específico">
+        </div>
+        <div class="form-group">
+          <label class="form-label">DFD</label>
+          <select class="form-select" id="ct-dfd"><option value="">—</option><option>✅</option><option>⏳</option><option>❌</option></select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">ETP/TR/Riscos</label>
+          <select class="form-select" id="ct-etp-tr"><option value="">—</option><option>✅</option><option>⏳</option><option>❌</option></select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Empenho</label>
+          <select class="form-select" id="ct-empenho"><option value="">—</option><option>✅</option><option>⏳</option><option>❌</option></select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Valor Contratado (R$)</label>
+          <input class="form-input" type="number" id="ct-valor-contratado-field" placeholder="0,00" min="0" step="0.01">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Valor Executado (R$)</label>
+          <input class="form-input" type="number" id="ct-valor-executado" placeholder="0,00" min="0" step="0.01">
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-cancelar" onclick="fecharModal('modal-contrato')">Cancelar</button>
+      <button class="btn-salvar" onclick="salvarContrato()">💾 Salvar</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: Novo Alerta -->
+<div class="modal-overlay" id="modal-alerta">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">🔔 <span id="modal-alert-titulo">Novo Alerta</span></div>
+      <button class="modal-close" onclick="fecharModal('modal-alerta')">✕</button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="alert-edit-idx" value="">
+      <div class="form-grid">
+        <div class="form-group span2">
+          <label class="form-label">Título do Alerta *</label>
+          <input class="form-input" id="alert-titulo" placeholder="Ex: Prazo crítico – Projeto X">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Tipo / Criticidade</label>
+          <select class="form-select" id="alert-tipo">
+            <option value="critico">🚨 Crítico</option>
+            <option value="atencao">⚠️ Atenção</option>
+            <option value="info">ℹ️ Informativo</option>
+            <option value="ok">✅ OK / Positivo</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Data</label>
+          <input class="form-input" type="date" id="alert-data">
+        </div>
+        <div class="form-group span2">
+          <label class="form-label">Descrição</label>
+          <textarea class="form-textarea" id="alert-desc" placeholder="Descreva o alerta com detalhes relevantes para a equipe..."></textarea>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-cancelar" onclick="fecharModal('modal-alerta')">Cancelar</button>
+      <button class="btn-salvar" onclick="salvarAlerta()">💾 Salvar Alerta</button>
+    </div>
+  </div>
+</div>
+
+<footer>
+  Tribunal Regional Eleitoral da Paraíba · SEGEM / SEIM · Programa Eleições 2026 · Painel desenvolvido para monitoramento interno
+</footer>
+
+<script>
+// ===== ESTADO GLOBAL =====
+const state = {
+  projetos: [],
+  orcamento: { p1_dotacao: 17101545.70, p2_dotacao: 340000.00, obs: [] },
+  contratos: [],
+  okrs: [],
+  alertas: [],
+  importLog: []
+};
+
+// ===== DADOS EXEMPLO =====
+const dadosExemplo = {
+  projetos: [
+    { projeto: 'Gestão de Zonas Eleitorais', unidade: 'SEGEM/SEIM', gestor: 'Eridan Pimenta', status: 'Em Andamento', progresso: 65, prazo: '2026-06-30', prioridade: 'Alta' },
+    { projeto: 'Credenciamento de Mesários', unidade: 'SGE', gestor: 'Coordenador SGE', status: 'A Iniciar', progresso: 0, prazo: '2026-04-30', prioridade: 'Alta' },
+    { projeto: 'SPCE Web – Adequação', unidade: 'STI', gestor: 'Gestor TI', status: 'Em Andamento', progresso: 40, prazo: '2026-03-31', prioridade: 'Alta' },
+    { projeto: 'Candex Web', unidade: 'STI', gestor: 'Gestor TI', status: 'Alerta', progresso: 20, prazo: '2026-02-28', prioridade: 'Alta' },
+    { projeto: 'Soluções de IA', unidade: 'SEGEM/LIODS', gestor: 'Equipe LIODS', status: 'Em Andamento', progresso: 55, prazo: '2026-05-31', prioridade: 'Média' },
+    { projeto: 'SAVP – Sistema de Áudio e Vídeo', unidade: 'STI', gestor: 'Gestor TI', status: 'A Iniciar', progresso: 0, prazo: '2026-05-01', prioridade: 'Média' },
+    { projeto: 'Monitoramento Centralizado', unidade: 'SEGEM', gestor: 'Coord. SEGEM', status: 'Em Andamento', progresso: 30, prazo: '2026-06-15', prioridade: 'Alta' },
+    { projeto: 'Capacitação de Servidores', unidade: 'SAD', gestor: 'Gestor SAD', status: 'Em Andamento', progresso: 75, prazo: '2026-08-01', prioridade: 'Média' },
+    { projeto: 'Logística Eleitoral – ZE Campina Grande', unidade: 'SEGEM', gestor: 'Eridan Pimenta', status: 'A Iniciar', progresso: 10, prazo: '2026-07-01', prioridade: 'Alta' },
+    { projeto: 'Logística Eleitoral – ZE Patos', unidade: 'SEGEM', gestor: 'Eridan Pimenta', status: 'A Iniciar', progresso: 5, prazo: '2026-07-01', prioridade: 'Alta' },
+    { projeto: 'Comunicação Eleitoral', unidade: 'ASCOM', gestor: 'Coord. ASCOM', status: 'Em Andamento', progresso: 50, prazo: '2026-09-01', prioridade: 'Média' },
+    { projeto: 'Segurança das Urnas', unidade: 'STI', gestor: 'Gestor TI', status: 'Alerta', progresso: 15, prazo: '2026-03-15', prioridade: 'Alta' },
+  ],
+  orcamento: [
+    { projeto: 'Gestão de Zonas Eleitorais', dotacao: 180000, empenhado: 95000, liquidado: 70000 },
+    { projeto: 'SPCE Web – Adequação', dotacao: 320000, empenhado: 100000, liquidado: 60000 },
+    { projeto: 'Candex Web', dotacao: 250000, empenhado: 40000, liquidado: 20000 },
+    { projeto: 'Soluções de IA', dotacao: 150000, empenhado: 80000, liquidado: 50000 },
+    { projeto: 'Logística Eleitoral – ZE Campina Grande', dotacao: 200000, empenhado: 20000, liquidado: 0 },
+    { projeto: 'Logística Eleitoral – ZE Patos', dotacao: 150000, empenhado: 10000, liquidado: 0 },
+    { projeto: 'Capacitação de Servidores', dotacao: 80000, empenhado: 60000, liquidado: 55000 },
+    { projeto: 'Comunicação Eleitoral', dotacao: 120000, empenhado: 55000, liquidado: 30000 },
+  ],
+  contratos: [
+    { _id:1, projeto:'Auditoria de Urnas', tipo:'Serviços', descricao:'Locação de mobiliário para o local do Teste de Integridade das Urnas', qtd:'2', unidade:'Conjunto', valorUnit:'', valorTotal:9100, sei:'0001156-48.2026.6.15.8000', pacont:'Sim', dlDfd:'', dlEtp:'', dlTr:'', progOrc:'', tipoOrc:'', dfd:'', etpTr:'', empenho:'', valorContratado:0, valorExecutado:0 },
+    { _id:2, projeto:'Auditoria de Urnas', tipo:'TSE', descricao:'Prestação de serviço de auditoria externa para exame e validação da organização, condução e conclusão dos trabalhos relativos ao Teste de Integridade das Urnas Eletrônicas', qtd:'1', unidade:'Un', valorUnit:'', valorTotal:93800, sei:'', pacont:'Sim', dlDfd:'', dlEtp:'', dlTr:'', progOrc:'', tipoOrc:'', dfd:'', etpTr:'', empenho:'', valorContratado:0, valorExecutado:0 },
+    { _id:3, projeto:'Auditoria de Urnas', tipo:'Serviços', descricao:'Contratação de empresa de filmagem para a Auditoria de Urnas Eletrônicas', qtd:'', unidade:'', valorUnit:'', valorTotal:0, sei:'', pacont:'Sim', dlDfd:'', dlEtp:'', dlTr:'', progOrc:'', tipoOrc:'', dfd:'', etpTr:'', empenho:'', valorContratado:0, valorExecutado:0 },
+    { _id:4, projeto:'Auditoria de Urnas', tipo:'Serviços', descricao:'Contratação de empresa de vigilância armada (realização de aditivo ao contrato da empresa terceirizada) para a Auditoria de Urnas Eletrônicas.', qtd:'', unidade:'', valorUnit:'', valorTotal:0, sei:'', pacont:'Sim', dlDfd:'', dlEtp:'', dlTr:'', progOrc:'', tipoOrc:'', dfd:'', etpTr:'', empenho:'', valorContratado:0, valorExecutado:0 },
+    { _id:5, projeto:'Plano de Comunicação', tipo:'Serviços', descricao:'Contratação de empresa produtora para fazer fotos e vídeos', qtd:'1', unidade:'und', valorUnit:23500, valorTotal:23500, sei:'', pacont:'Não', dlDfd:'', dlEtp:'', dlTr:'', progOrc:'', tipoOrc:'', dfd:'', etpTr:'', empenho:'', valorContratado:0, valorExecutado:0 },
+    { _id:6, projeto:'Plano de Comunicação', tipo:'Serviços', descricao:'Jornalista terceirizado e Relações Públicas terceirizados para o período eleitoral', qtd:'2', unidade:'und', valorUnit:24000, valorTotal:24000, sei:'', pacont:'Não', dlDfd:'', dlEtp:'', dlTr:'', progOrc:'', tipoOrc:'', dfd:'', etpTr:'', empenho:'', valorContratado:0, valorExecutado:0 },
+    { _id:7, projeto:'Plano de Comunicação', tipo:'Serviços', descricao:'Coffee Break', qtd:'4', unidade:'und', valorUnit:'', valorTotal:0, sei:'', pacont:'Não', dlDfd:'', dlEtp:'', dlTr:'', progOrc:'', tipoOrc:'', dfd:'', etpTr:'', empenho:'', valorContratado:0, valorExecutado:0 },
+    { _id:8, projeto:'Plano de Comunicação', tipo:'Serviços', descricao:'Serviços gráficos', qtd:'500', unidade:'und', valorUnit:'', valorTotal:0, sei:'', pacont:'Não', dlDfd:'', dlEtp:'', dlTr:'', progOrc:'', tipoOrc:'', dfd:'', etpTr:'', empenho:'', valorContratado:0, valorExecutado:0 },
+    { _id:9, projeto:'Plano de Comunicação', tipo:'TSE', descricao:'Aquisição de Tótens para carregamento de celulares', qtd:'4', unidade:'und', valorUnit:'', valorTotal:0, sei:'', pacont:'Não', dlDfd:'', dlEtp:'', dlTr:'', progOrc:'', tipoOrc:'', dfd:'', etpTr:'', empenho:'', valorContratado:0, valorExecutado:0 },
+    { _id:10, projeto:'Logística e Apoio', tipo:'Serviços', descricao:'Material gráfico (cartazes, faixas etc)', qtd:'', unidade:'', valorUnit:'', valorTotal:0, sei:'', pacont:'Não', dlDfd:'-', dlEtp:'23/3/26', dlTr:'23/3/26', progOrc:'', tipoOrc:'', dfd:'', etpTr:'', empenho:'', valorContratado:0, valorExecutado:0 },
+    { _id:11, projeto:'Logística e Apoio', tipo:'Serviços', descricao:'Contratação de empresa para prestação dos serviços de transporte de urnas eletrônicas, pessoal e materiais específicos das Eleições 2026 (1º Turno)', qtd:'', unidade:'', valorUnit:'', valorTotal:1007000, sei:'', pacont:'Sim', dlDfd:'', dlEtp:'', dlTr:'', progOrc:'', tipoOrc:'', dfd:'', etpTr:'', empenho:'', valorContratado:0, valorExecutado:0 },
+    { _id:12, projeto:'Logística e Apoio', tipo:'Serviços', descricao:'Contratação de empresa para prestação dos serviços de transporte de urnas eletrônicas, pessoal e materiais específicos das Eleições 2026 (2º Turno)', qtd:'', unidade:'', valorUnit:'', valorTotal:1007000, sei:'', pacont:'Sim', dlDfd:'', dlEtp:'', dlTr:'', progOrc:'', tipoOrc:'', dfd:'', etpTr:'', empenho:'', valorContratado:0, valorExecutado:0 },
+    { _id:13, projeto:'Logística e Apoio', tipo:'Serviços', descricao:'Contratação de empresa(s) para execução dos serviços de transporte com fornecimento de veículos e mão de obra para deslocamento de autoridades e servidores (1º Turno)', qtd:'', unidade:'', valorUnit:'', valorTotal:314000, sei:'', pacont:'Sim', dlDfd:'', dlEtp:'', dlTr:'', progOrc:'', tipoOrc:'', dfd:'', etpTr:'', empenho:'', valorContratado:0, valorExecutado:0 },
+    { _id:14, projeto:'Logística e Apoio', tipo:'Serviços', descricao:'Contratação de empresa(s) para execução dos serviços de transporte com fornecimento de veículos e mão de obra para deslocamento de autoridades e servidores – Estado da Paraíba (2º Turno)', qtd:'', unidade:'', valorUnit:'', valorTotal:275000, sei:'', pacont:'Sim', dlDfd:'', dlEtp:'', dlTr:'', progOrc:'', tipoOrc:'', dfd:'', etpTr:'', empenho:'', valorContratado:0, valorExecutado:0 },
+    { _id:15, projeto:'Logística e Apoio', tipo:'Serviços', descricao:'Prestação dos serviços de implantação e administração de sistema de cartão magnético para aquisição de combustíveis suplementar nas Eleições 2026 (1º e 2º Turnos)', qtd:'', unidade:'', valorUnit:'', valorTotal:200000, sei:'', pacont:'Sim', dlDfd:'', dlEtp:'', dlTr:'', progOrc:'', tipoOrc:'', dfd:'', etpTr:'', empenho:'', valorContratado:0, valorExecutado:0 },
+    { _id:16, projeto:'Logística e Apoio', tipo:'Serviços', descricao:'Contratação dos Serviços de condução temporária de veículos para autoridades e servidores da Sede do TRE-PB por 70 dias a partir de 17/08/2026', qtd:'', unidade:'', valorUnit:'', valorTotal:105000, sei:'', pacont:'Sim', dlDfd:'', dlEtp:'', dlTr:'', progOrc:'', tipoOrc:'', dfd:'', etpTr:'', empenho:'', valorContratado:0, valorExecutado:0 },
+    { _id:17, projeto:'Logística e Apoio', tipo:'Serviços', descricao:'Serviço extraordinário contrato nº 01/2023 (Sede do TRE/PB) e motoristas temporários', qtd:'', unidade:'', valorUnit:'', valorTotal:90000, sei:'', pacont:'Sim', dlDfd:'', dlEtp:'', dlTr:'', progOrc:'', tipoOrc:'', dfd:'', etpTr:'', empenho:'', valorContratado:0, valorExecutado:0 },
+    { _id:18, projeto:'Logística e Apoio', tipo:'Aquisição', descricao:'Aquisição gêneros de alimentação', qtd:'', unidade:'', valorUnit:'', valorTotal:25000, sei:'', pacont:'Sim', dlDfd:'', dlEtp:'', dlTr:'', progOrc:'', tipoOrc:'', dfd:'', etpTr:'', empenho:'', valorContratado:0, valorExecutado:0 },
+    { _id:19, projeto:'Logística e Apoio', tipo:'Aquisição', descricao:'Aquisição de material de limpeza', qtd:'', unidade:'', valorUnit:'', valorTotal:60000, sei:'', pacont:'Sim', dlDfd:'', dlEtp:'', dlTr:'', progOrc:'', tipoOrc:'', dfd:'', etpTr:'', empenho:'', valorContratado:0, valorExecutado:0 },
+    { _id:20, projeto:'Logística e Apoio', tipo:'Aquisição', descricao:'Aquisição de material de expediente', qtd:'', unidade:'', valorUnit:'', valorTotal:70000, sei:'', pacont:'Sim', dlDfd:'', dlEtp:'', dlTr:'', progOrc:'', tipoOrc:'', dfd:'', etpTr:'', empenho:'', valorContratado:0, valorExecutado:0 },
+    { _id:21, projeto:'Logística e Apoio', tipo:'Serviços', descricao:'Diária para colaboradores', qtd:'', unidade:'', valorUnit:'', valorTotal:70000, sei:'', pacont:'Sim', dlDfd:'', dlEtp:'', dlTr:'', progOrc:'', tipoOrc:'', dfd:'', etpTr:'', empenho:'', valorContratado:0, valorExecutado:0 },
+    { _id:22, projeto:'Logística e Apoio', tipo:'Aquisição', descricao:'Aquisição de insumos para impressoras', qtd:'', unidade:'', valorUnit:'', valorTotal:20000, sei:'', pacont:'Sim', dlDfd:'', dlEtp:'', dlTr:'', progOrc:'', tipoOrc:'', dfd:'', etpTr:'', empenho:'', valorContratado:0, valorExecutado:0 },
+    { _id:23, projeto:'Logística e Apoio', tipo:'Serviços', descricao:'Serviço extraordinário realizado por funcionários da empresa de manutenção predial (Eleições 2026).', qtd:'', unidade:'', valorUnit:'', valorTotal:60000, sei:'', pacont:'Sim', dlDfd:'', dlEtp:'', dlTr:'', progOrc:'', tipoOrc:'', dfd:'', etpTr:'', empenho:'', valorContratado:0, valorExecutado:0 },
+    { _id:24, projeto:'Mesários', tipo:'Serviços', descricao:'Material para treinamento de mesários', qtd:'a definir', unidade:'und', valorUnit:'', valorTotal:0, sei:'', pacont:'Não', dlDfd:'11/3/26', dlEtp:'23/3/26', dlTr:'23/3/26', progOrc:'', tipoOrc:'', dfd:'', etpTr:'', empenho:'', valorContratado:0, valorExecutado:0 },
+    { _id:25, projeto:'Preparação de Urnas', tipo:'TSE', descricao:'Aquisição de baterias de Lítio-Ferro-Fosfato 12V, 9Ah, para urnas eletrônicas modelos UE2020/UE2022.', qtd:'', unidade:'', valorUnit:'', valorTotal:103950, sei:'', pacont:'Sim', dlDfd:'', dlEtp:'', dlTr:'', progOrc:'', tipoOrc:'', dfd:'', etpTr:'', empenho:'', valorContratado:0, valorExecutado:0 },
+    { _id:26, projeto:'Preparação de Urnas', tipo:'TSE', descricao:'Aquisição de baterias de chumbo-ácido selada, 12V, 7Ah, para urnas eletrônicas modelos UE2013/UE2015.', qtd:'', unidade:'', valorUnit:'', valorTotal:120000, sei:'', pacont:'Sim', dlDfd:'', dlEtp:'', dlTr:'', progOrc:'', tipoOrc:'', dfd:'', etpTr:'', empenho:'', valorContratado:0, valorExecutado:0 },
+    { _id:27, projeto:'Preparação de Urnas', tipo:'TSE', descricao:'Aquisição de bobinas de papel para as impressoras das urnas eletrônicas (60 metros).', qtd:'', unidade:'', valorUnit:'', valorTotal:70000, sei:'', pacont:'Sim', dlDfd:'', dlEtp:'', dlTr:'', progOrc:'', tipoOrc:'', dfd:'', etpTr:'', empenho:'', valorContratado:0, valorExecutado:0 },
+    { _id:28, projeto:'Preparação de Urnas', tipo:'TSE', descricao:'Aquisição de cabina de votação para urnas eletrônicas modelos UE2020 e UE2022.', qtd:'', unidade:'', valorUnit:'', valorTotal:60000, sei:'', pacont:'Sim', dlDfd:'', dlEtp:'', dlTr:'', progOrc:'', tipoOrc:'', dfd:'', etpTr:'', empenho:'', valorContratado:0, valorExecutado:0 },
+    { _id:29, projeto:'Preparação de Urnas', tipo:'TSE', descricao:'Aquisição de embalagem genérica para urnas eletrônicas modelos UE2013/UE2015', qtd:'', unidade:'', valorUnit:'', valorTotal:6000, sei:'', pacont:'Sim', dlDfd:'', dlEtp:'', dlTr:'', progOrc:'', tipoOrc:'', dfd:'', etpTr:'', empenho:'', valorContratado:0, valorExecutado:0 },
+    { _id:30, projeto:'Preparação de Urnas', tipo:'TSE', descricao:'Aquisição de envelope de segurança Casa da Moeda', qtd:'', unidade:'', valorUnit:'', valorTotal:20000, sei:'', pacont:'Sim', dlDfd:'', dlEtp:'', dlTr:'', progOrc:'', tipoOrc:'', dfd:'', etpTr:'', empenho:'', valorContratado:0, valorExecutado:0 },
+    { _id:31, projeto:'Preparação de Urnas', tipo:'Serviços', descricao:'Contratação de serviço de conservação (manutenção preventiva) do parque de urnas do TRE-PB.', qtd:'', unidade:'', valorUnit:'', valorTotal:340000, sei:'', pacont:'Sim', dlDfd:'', dlEtp:'', dlTr:'', progOrc:'', tipoOrc:'', dfd:'', etpTr:'', empenho:'', valorContratado:0, valorExecutado:0 },
+    { _id:32, projeto:'Preparação de Urnas', tipo:'Serviços', descricao:'Contratação de serviço de impressão de rótulos identificadores para embalagens e gabinetes de urnas eletrônicas.', qtd:'', unidade:'', valorUnit:'', valorTotal:28000, sei:'', pacont:'Sim', dlDfd:'', dlEtp:'', dlTr:'', progOrc:'', tipoOrc:'', dfd:'', etpTr:'', empenho:'', valorContratado:0, valorExecutado:0 },
+    { _id:33, projeto:'Preparação de Urnas', tipo:'Serviços', descricao:'Contratação de serviço de fornecimento de etiquetas e serviços de impressão personalizados.', qtd:'', unidade:'', valorUnit:'', valorTotal:10000, sei:'', pacont:'Sim', dlDfd:'', dlEtp:'', dlTr:'', progOrc:'', tipoOrc:'', dfd:'', etpTr:'', empenho:'', valorContratado:0, valorExecutado:0 },
+    { _id:34, projeto:'Suporte TIC', tipo:'Aquisição', descricao:'Aquisição de fones de ouvido Logitech Gaming G432', qtd:'', unidade:'', valorUnit:'', valorTotal:4000, sei:'', pacont:'Sim', dlDfd:'', dlEtp:'', dlTr:'', progOrc:'', tipoOrc:'', dfd:'', etpTr:'', empenho:'', valorContratado:0, valorExecutado:0 },
+    { _id:35, projeto:'Suporte TIC', tipo:'Ata de Registro de Preços', descricao:'Aquisição de fones de ouvido descartáveis', qtd:'', unidade:'', valorUnit:'', valorTotal:60000, sei:'0008379-86.2025.6.15.8000', pacont:'Sim', dlDfd:'', dlEtp:'', dlTr:'', progOrc:'', tipoOrc:'', dfd:'', etpTr:'', empenho:'', valorContratado:0, valorExecutado:0 },
+  ],
+  okrs: [
+    {
+      objetivo: 'O1 – Garantir a infraestrutura tecnológica para as Eleições 2026',
+      pct: 38,
+      krs: [
+        { kr: 'KR1 – Implantar SPCE Web em 100% das zonas eleitorais', meta: 100, atual: 40, unidade: '%' },
+        { kr: 'KR2 – Concluir adequação do Candex Web até março/2026', meta: 100, atual: 20, unidade: '%' },
+        { kr: 'KR3 – Implementar soluções de IA em 3 processos-chave', meta: 3, atual: 1, unidade: 'processos' },
+      ]
+    },
+    {
+      objetivo: 'O2 – Fortalecer a logística eleitoral nas Zonas Eleitorais prioritárias',
+      pct: 22,
+      krs: [
+        { kr: 'KR1 – Concluir diagnóstico logístico de 100% das ZE prioritárias', meta: 100, atual: 30, unidade: '%' },
+        { kr: 'KR2 – Firmar contratos de transporte até abril/2026', meta: 3, atual: 0, unidade: 'contratos' },
+        { kr: 'KR3 – Reduzir ocorrências logísticas em 25% vs. 2024', meta: 25, atual: 10, unidade: '%' },
+      ]
+    },
+    {
+      objetivo: 'O3 – Capacitar 100% dos servidores envolvidos nas eleições',
+      pct: 75,
+      krs: [
+        { kr: 'KR1 – Realizar 8 turmas de capacitação de mesários', meta: 8, atual: 6, unidade: 'turmas' },
+        { kr: 'KR2 – Atingir 90% de aproveitamento nas avaliações', meta: 90, atual: 85, unidade: '%' },
+        { kr: 'KR3 – Capacitar 100% dos servidores de TI em segurança', meta: 100, atual: 80, unidade: '%' },
+      ]
+    },
+    {
+      objetivo: 'O4 – Garantir execução orçamentária de 85% do Programa',
+      pct: 32,
+      krs: [
+        { kr: 'KR1 – Empenhar 85% da dotação até agosto/2026', meta: 85, atual: 30, unidade: '%' },
+        { kr: 'KR2 – Liquidar 70% dos empenhos no exercício', meta: 70, atual: 22, unidade: '%' },
+        { kr: 'KR3 – Concluir 100% das licitações até maio/2026', meta: 100, atual: 40, unidade: '%' },
+      ]
+    },
+  ],
+  alertas: [
+    { tipo: 'critico', icone: '🚨', titulo: 'Candex Web – Prazo crítico', desc: 'O projeto Candex Web possui prazo vencido (28/02/2026) e apenas 20% de progresso. Necessária intervenção imediata da gestão.', data: '11/03/2026' },
+    { tipo: 'critico', icone: '🚨', titulo: 'Segurança das Urnas – Atraso crítico', desc: 'Prazo de 15/03/2026 com apenas 15% de execução. Risco de impacto direto nas eleições.', data: '11/03/2026' },
+    { tipo: 'atencao', icone: '⚠️', titulo: 'CT-004/26 – Contrato a vencer em 35 dias', desc: 'Contrato de Equipamentos de Áudio e Vídeo vence em 15/04/2026. Avaliar renovação ou novo processo licitatório.', data: '10/03/2026' },
+    { tipo: 'atencao', icone: '⚠️', titulo: 'SPCE Web – Progresso abaixo da meta', desc: '40% de progresso com prazo em 31/03/2026. Meta esperada: 70%. Acionar equipe de TI.', data: '08/03/2026' },
+    { tipo: 'info', icone: 'ℹ️', titulo: 'Capacitação – Turma 7 confirmada', desc: '6ª turma concluída com 92% de aproveitamento. 7ª turma agendada para 20/03/2026.', data: '07/03/2026' },
+    { tipo: 'ok', icone: '✅', titulo: 'OKR O3 – Meta de 75% atingida', desc: 'Objetivo de capacitação está 75% concluído, acima da meta proporcional de 65% para o período.', data: '05/03/2026' },
+  ]
+};
+
+// ===== INICIALIZAÇÃO =====
+function exportarComDados() {
+  try {
+    // Serializa dados atuais
+    var dados = {
+      projetos:  state.projetos,
+      orcamento: state.orcamento,
+      contratos: state.contratos,
+      okrs:      state.okrs,
+      alertas:   state.alertas
+    };
+
+    // Busca o template base64 armazenado como chunks
+    var chunks = document.querySelectorAll('meta[name="tpl-chunk"]');
+    if (!chunks.length) {
+      alert('Template não encontrado. Use o arquivo original para exportar.');
+      return;
+    }
+    var b64 = '';
+    chunks.forEach(function(m){ b64 += m.getAttribute('content'); });
+    var html = decodeURIComponent(escape(atob(b64)));
+
+    // Remove injeção anterior
+    html = html.replace(/<script id="__exp__">
+window.__EXP__ = {"projetos":[{"projeto":"Plano de Comunicação das Eleições 2026","unidade":"ASCOM","gestor":"Michele Souza","status":"Em Andamento","progresso":0,"prazo":"2026-02-11","prioridade":"Alta","_manual":true},{"projeto":"Auditoria de Urnas","unidade":"ASI","gestor":"Diógenes Paiva","status":"Em Andamento","progresso":0,"prazo":"2026-10-30","prioridade":"Alta","_manual":true},{"projeto":"Segurança","unidade":"ASPRE","gestor":"Eduardo Rangel","status":"Em Andamento","progresso":0,"prazo":"2026-11-30","prioridade":"Alta","_manual":true},{"projeto":"Eleições na Zona","unidade":"COINT","gestor":"Wesley Brito e Eridan","status":"Em Andamento","progresso":5,"prazo":"2026-11-20","prioridade":"Média","_manual":true},{"projeto":"Logística e Apoio às Eleições","unidade":"SAD","gestor":"Arioaldo","status":"Em Andamento","progresso":0,"prazo":"2026-10-31","prioridade":"Alta","_manual":true},{"projeto":"Final de Alistamento","unidade":"SCRE","gestor":"Charles Elias","status":"Em Andamento","progresso":56,"prazo":"2026-05-22","prioridade":"Alta","_manual":true},{"projeto":"Propaganda Eleitoral","unidade":"SCRE","gestor":"João Fidelis","status":"A Iniciar","progresso":0,"prazo":"2026-10-26","prioridade":"Média","_manual":true},{"projeto":"Mesários e Auxiliares das Eleições","unidade":"SGP","gestor":"Océlio Batista","status":"Em Andamento","progresso":0,"prazo":"2026-12-19","prioridade":"Alta","_manual":true},{"projeto":"Registro de Candidaturas","unidade":"SJI","gestor":"Pedro Henrique","status":"Em Andamento","progresso":2,"prazo":"2026-10-24","prioridade":"Alta","_manual":true},{"projeto":"Prestação de Contas","unidade":"SJI","gestor":"André Cabral","status":"A Iniciar","progresso":0,"prazo":"2026-12-04","prioridade":"Alta","_manual":true},{"projeto":"Preparação de Urnas","unidade":"STIC","gestor":"Cassimiro","status":"A Iniciar","progresso":0,"prazo":"2026-10-28","prioridade":"Média","_manual":true},{"projeto":"Suporte de TIC","unidade":"STIC","gestor":"Marcell Manfrin","status":"Em Andamento","progresso":0,"prazo":"2026-12-18","prioridade":"Alta","_manual":true},{"projeto":"Dia E-TIC","unidade":"STIC","gestor":"Hanniery Freire","status":"A Iniciar","progresso":0,"prazo":"2026-10-28","prioridade":"Média","_manual":true}],"orcamento":[{"projeto":"—","dotacao":0,"empenhado":0,"liquidado":0},{"projeto":"—","dotacao":0,"empenhado":0,"liquidado":0},{"projeto":"—","dotacao":0,"empenhado":0,"liquidado":0},{"projeto":"—","dotacao":0,"empenhado":0,"liquidado":0}],"contratos":[{"projeto":"Auditoria de Urnas","tipo":"Serviços","descricao":"Locação de mobiliário para o local do Teste de Integridade das Urnas","qtd":"2","unidade":"Und","valorUnit":0,"valorTotal":9100,"sei":"0001156-48.2026.6.15.8000","pacont":"Sim","dlDfd":"","dlEtp":"","dlTr":"","progOrc":0,"tipoOrc":"Eleições","dfd":"✅","etpTr":"⏳","empenho":"","valorContratado":0,"valorExecutado":0,"_id":1},{"projeto":"Auditoria de Urnas","tipo":"TSE","descricao":"Serviço de auditoria externa para exame e validação da organização, condução e conclusão dos trabalhos relativos ao Teste de Integridade das Urnas Eletrônicas","qtd":"1","unidade":"Und","valorUnit":93800,"valorTotal":93800,"sei":"","pacont":"Sim","dlDfd":"","dlEtp":"","dlTr":"","progOrc":0,"tipoOrc":"Eleições","dfd":"","etpTr":"","empenho":"","valorContratado":0,"valorExecutado":0,"_id":2},{"projeto":"Plano de Comunicação","tipo":"Serviços","descricao":"Contratação de empresa produtora para fazer fotos e vídeos.","qtd":"1","unidade":"Und","valorUnit":23500,"valorTotal":23500,"sei":"","pacont":"Não","dlDfd":"","dlEtp":"","dlTr":"","progOrc":0,"tipoOrc":"Eleições","dfd":"","etpTr":"","empenho":"","valorContratado":0,"valorExecutado":0,"_id":3},{"projeto":"Plano de Comunicação","tipo":"Serviços","descricao":"Jornalista terceirizado e Relações Públicas terceirizados para o período eleitoral.","qtd":"2","unidade":"Und","valorUnit":12000,"valorTotal":24000,"sei":"","pacont":"Não","dlDfd":"","dlEtp":"","dlTr":"","progOrc":0,"tipoOrc":"Eleições","dfd":"","etpTr":"","empenho":"","valorContratado":0,"valorExecutado":0,"_id":4},{"projeto":"Plano de Comunicação","tipo":"Serviços","descricao":"Serviços gráficos.","qtd":"500","unidade":"Und","valorUnit":0,"valorTotal":0,"sei":"","pacont":"Não","dlDfd":"","dlEtp":"","dlTr":"","progOrc":0,"tipoOrc":"Eleições","dfd":"","etpTr":"","empenho":"","valorContratado":0,"valorExecutado":0,"_id":5},{"projeto":"Plano de Comunicação","tipo":"Serviços","descricao":"Aquisição/locação de Totens para carregamento de celulares","qtd":"4","unidade":"Und","valorUnit":0,"valorTotal":0,"sei":"","pacont":"Não","dlDfd":"","dlEtp":"","dlTr":"","progOrc":0,"tipoOrc":"Eleições","dfd":"","etpTr":"","empenho":"","valorContratado":0,"valorExecutado":0,"_id":6},{"projeto":"Logística e Apoio","tipo":"Serviços","descricao":"Material gráfico (cartazes, faixas etc) para as Zonas Eleitorais","qtd":"","unidade":"Und","valorUnit":0,"valorTotal":0,"sei":"","pacont":"Não","dlDfd":"","dlEtp":"23/03/2026","dlTr":"23/03/2026","progOrc":0,"tipoOrc":"Eleições","dfd":"✅","etpTr":"⏳","empenho":"","valorContratado":0,"valorExecutado":0,"_id":7},{"projeto":"Mesários","tipo":"Serviços","descricao":"Material para treinamento de mesários.","qtd":"a definir","unidade":"","valorUnit":0,"valorTotal":0,"sei":"","pacont":"Não","dlDfd":"","dlEtp":"","dlTr":"","progOrc":0,"tipoOrc":"Eleições","dfd":"","etpTr":"","empenho":"","valorContratado":0,"valorExecutado":0,"_id":8},{"projeto":"Preparação de Urnas","tipo":"TSE","descricao":"Aquisição de baterias de Lítio-Ferro-Fosfato 12V, 9Ah, para urnas eletrônicas modelos UE2020/UE2022.","qtd":"","unidade":"","valorUnit":103950,"valorTotal":103950,"sei":"","pacont":"Sim","dlDfd":"","dlEtp":"","dlTr":"","progOrc":0,"tipoOrc":"Eleições","dfd":"","etpTr":"","empenho":"","valorContratado":0,"valorExecutado":0,"_id":9},{"projeto":"Preparação de Urnas","tipo":"TSE","descricao":"Aquisição de baterias de chumbo-ácido selada, 12V, 7Ah, para urnas eletrônicas modelos UE2013/UE2015.","qtd":"","unidade":"","valorUnit":120000,"valorTotal":120000,"sei":"","pacont":"Sim","dlDfd":"","dlEtp":"","dlTr":"","progOrc":0,"tipoOrc":"Eleições","dfd":"","etpTr":"","empenho":"","valorContratado":0,"valorExecutado":0,"_id":10},{"projeto":"Preparação de Urnas","tipo":"TSE","descricao":"Aquisição de bobinas de papel para as impressoras das urnas eletrônicas (60 metros).","qtd":"","unidade":"","valorUnit":70000,"valorTotal":70000,"sei":"","pacont":"Sim","dlDfd":"","dlEtp":"","dlTr":"","progOrc":0,"tipoOrc":"Eleições","dfd":"","etpTr":"","empenho":"","valorContratado":0,"valorExecutado":0,"_id":11},{"projeto":"Preparação de Urnas","tipo":"TSE","descricao":"Aquisição de cabina de votação para urnas eletrônicas modelos UE2020 e UE2022.","qtd":"","unidade":"","valorUnit":60000,"valorTotal":60000,"sei":"","pacont":"Sim","dlDfd":"","dlEtp":"","dlTr":"","progOrc":0,"tipoOrc":"Eleições","dfd":"","etpTr":"","empenho":"","valorContratado":0,"valorExecutado":0,"_id":12},{"projeto":"Preparação de Urnas","tipo":"TSE","descricao":"Aquisição de embalagem genérica para urnas eletrônicas modelos UE2013/UE2015","qtd":"","unidade":"","valorUnit":6000,"valorTotal":6000,"sei":"","pacont":"Sim","dlDfd":"","dlEtp":"","dlTr":"","progOrc":0,"tipoOrc":"Eleições","dfd":"","etpTr":"","empenho":"","valorContratado":0,"valorExecutado":0,"_id":13},{"projeto":"Preparação de Urnas","tipo":"TSE","descricao":"Aquisição de envelope de segurança Casa da Moeda.","qtd":"","unidade":"","valorUnit":20000,"valorTotal":20000,"sei":"","pacont":"Sim","dlDfd":"","dlEtp":"","dlTr":"","progOrc":0,"tipoOrc":"Eleições","dfd":"","etpTr":"","empenho":"","valorContratado":0,"valorExecutado":0,"_id":14},{"projeto":"Preparação de Urnas","tipo":"Serviços","descricao":"Contratação de serviço de conservação (manutenção preventiva) do parque de urnas do TRE-PB.","qtd":"","unidade":"","valorUnit":340000,"valorTotal":340000,"sei":"","pacont":"Sim","dlDfd":"","dlEtp":"","dlTr":"","progOrc":0,"tipoOrc":"Manutenção de Urnas","dfd":"","etpTr":"","empenho":"","valorContratado":0,"valorExecutado":0,"_id":15},{"projeto":"Preparação de Urnas","tipo":"Serviços","descricao":"Contratação de serviço de impressão de rótulos identificadores para embalagens e gabinetes de urnas eletrônicas.","qtd":"","unidade":"Und","valorUnit":28000,"valorTotal":28000,"sei":"","pacont":"Sim","dlDfd":"","dlEtp":"","dlTr":"","progOrc":0,"tipoOrc":"Eleições","dfd":"","etpTr":"","empenho":"","valorContratado":0,"valorExecutado":0,"_id":16},{"projeto":"Preparação de Urnas","tipo":"Serviços","descricao":"Contratação de serviço de fornecimento de etiquetas e serviços de impressão personalizados.","qtd":"","unidade":"","valorUnit":10000,"valorTotal":10000,"sei":"","pacont":"Sim","dlDfd":"","dlEtp":"","dlTr":"","progOrc":0,"tipoOrc":"Eleições","dfd":"","etpTr":"","empenho":"","valorContratado":0,"valorExecutado":0,"_id":17},{"projeto":"Suporte TIC","tipo":"Aquisição","descricao":"Aquisição de fones de ouvido Logitech Gaming G432","qtd":"","unidade":"","valorUnit":4000,"valorTotal":4000,"sei":"","pacont":"Sim","dlDfd":"","dlEtp":"","dlTr":"","progOrc":0,"tipoOrc":"Eleições","dfd":"","etpTr":"","empenho":"","valorContratado":0,"valorExecutado":0,"_id":18},{"projeto":"Suporte TIC","tipo":"Ata de Registro de Preços","descricao":"Aquisição de fones de ouvido descartáveis para utilização nas Seções Eleitorais","qtd":"","unidade":"","valorUnit":60000,"valorTotal":60000,"sei":"","pacont":"Sim","dlDfd":"","dlEtp":"","dlTr":"","progOrc":0,"tipoOrc":"Eleições","dfd":"","etpTr":"","empenho":"","valorContratado":0,"valorExecutado":0,"_id":19},{"projeto":"Logística e Apoio","tipo":"Serviços","descricao":"Contratação de empresa para prestação dos serviços de transporte de urnas eletrônicas, pessoal e materiais específicos das Eleições 2024, a serem executados de acordo com o especificado no Termo de Referência (1º  Turno)","qtd":"","unidade":"","valorUnit":1007000,"valorTotal":1007000,"sei":"","pacont":"Sim","dlDfd":"","dlEtp":"","dlTr":"","progOrc":0,"tipoOrc":"Eleições","dfd":"","etpTr":"","empenho":"","valorContratado":0,"valorExecutado":0,"_id":20},{"projeto":"Logística e Apoio","tipo":"Serviços","descricao":"Contratação de empresa para prestação dos serviços de transporte de urnas eletrônicas, pessoal e materiais específicos das Eleições 2026, a serem executados de acordo com o especificado no Termo de Referência (2º Turno).","qtd":"","unidade":"","valorUnit":1007000,"valorTotal":1007000,"sei":"","pacont":"Sim","dlDfd":"","dlEtp":"","dlTr":"","progOrc":0,"tipoOrc":"Eleições","dfd":"","etpTr":"","empenho":"","valorContratado":0,"valorExecutado":0,"_id":21},{"projeto":"Logística e Apoio","tipo":"Serviços","descricao":"Contratação de empresa(s) para execução dos serviços de transporte com fornecimento de\nveículos e mão de obra, para fins de viabilizar o deslocamento de autoridades, servidores e auxiliares envolvidos nas Eleições Municipais de 2020, nas unidades da Justiça Eleitoral","qtd":"","unidade":"","valorUnit":314000,"valorTotal":314000,"sei":"","pacont":"Sim","dlDfd":"","dlEtp":"","dlTr":"","progOrc":0,"tipoOrc":"Eleições","dfd":"","etpTr":"","empenho":"","valorContratado":0,"valorExecutado":0,"_id":22},{"projeto":"Logística e Apoio","tipo":"Serviços","descricao":"\"Contratação de empresa(s) para execução dos serviços de transporte com fornecimento de\nveículos e mão de obra, para fins de viabilizar o deslocamento de autoridades, servidores e auxiliares envolvidos nas Eleições Municipais de 2020, nas unidades da Justiça Eleitoral\ndo Estado da Paraíba.\"","qtd":"","unidade":"","valorUnit":275000,"valorTotal":275000,"sei":"","pacont":"Sim","dlDfd":"","dlEtp":"","dlTr":"","progOrc":0,"tipoOrc":"Eleições","dfd":"","etpTr":"","empenho":"","valorContratado":0,"valorExecutado":0,"_id":23},{"projeto":"Logística e Apoio","tipo":"Serviços","descricao":"Prestação dos serviços de implantação, intermediação e administração de um sistema\ninformatizado e integrado, com utilização de cartão magnético de gerenciamento, para\naquisição de combustíveis suplementar nas Eleições 2026 (gasolina, álcool e óleo diesel)\npara os veículos oficiais (automóveis tipo passeio, pickups, vans e caminhões) que compõem a frota do TRE-PB e veículos locados. (1º e 2º Turnos)","qtd":"","unidade":"","valorUnit":200000,"valorTotal":200000,"sei":"","pacont":"Sim","dlDfd":"","dlEtp":"","dlTr":"","progOrc":0,"tipoOrc":"Eleições","dfd":"","etpTr":"","empenho":"","valorContratado":0,"valorExecutado":0,"_id":24},{"projeto":"Logística e Apoio","tipo":"Serviços","descricao":"Contratação dos Serviços de condução temporária de veículos, para autoridades e servidores da Sede do TRE/PB, Fórum Eleitoral de João Pessoa por um período de 70 dias à partir de 17 de Agosto de 2026.","qtd":"","unidade":"","valorUnit":105000,"valorTotal":105000,"sei":"","pacont":"Sim","dlDfd":"","dlEtp":"","dlTr":"","progOrc":0,"tipoOrc":"Eleições","dfd":"","etpTr":"","empenho":"","valorContratado":0,"valorExecutado":0,"_id":25},{"projeto":"Logística e Apoio","tipo":"Serviços","descricao":"Serviço extraordinário contrato nº 01/2023 (Sede do TRE/PB) e motoristas temporários.","qtd":"","unidade":"","valorUnit":90000,"valorTotal":90000,"sei":"","pacont":"Sim","dlDfd":"","dlEtp":"","dlTr":"","progOrc":0,"tipoOrc":"Eleições","dfd":"","etpTr":"","empenho":"","valorContratado":0,"valorExecutado":0,"_id":26},{"projeto":"Logística e Apoio","tipo":"Aquisição","descricao":"Aquisição gêneros de alimentação.","qtd":"","unidade":"","valorUnit":25000,"valorTotal":25000,"sei":"","pacont":"Sim","dlDfd":"","dlEtp":"","dlTr":"","progOrc":0,"tipoOrc":"Eleições","dfd":"","etpTr":"","empenho":"","valorContratado":0,"valorExecutado":0,"_id":27},{"projeto":"Logística e Apoio","tipo":"Aquisição","descricao":"Aquisição de material de limpeza.","qtd":"","unidade":"","valorUnit":60000,"valorTotal":60000,"sei":"","pacont":"Sim","dlDfd":"","dlEtp":"","dlTr":"","progOrc":0,"tipoOrc":"Eleições","dfd":"","etpTr":"","empenho":"","valorContratado":0,"valorExecutado":0,"_id":28},{"projeto":"Logística e Apoio","tipo":"Aquisição","descricao":"Aquisição de material de expediente","qtd":"","unidade":"","valorUnit":70000,"valorTotal":70000,"sei":"","pacont":"Sim","dlDfd":"","dlEtp":"","dlTr":"","progOrc":0,"tipoOrc":"Eleições","dfd":"","etpTr":"","empenho":"","valorContratado":0,"valorExecutado":0,"_id":29},{"projeto":"Logística e Apoio","tipo":"Serviços","descricao":"Diárias para colaboradores","qtd":"","unidade":"","valorUnit":70000,"valorTotal":70000,"sei":"","pacont":"Sim","dlDfd":"","dlEtp":"","dlTr":"","progOrc":0,"tipoOrc":"Eleições","dfd":"","etpTr":"","empenho":"","valorContratado":0,"valorExecutado":0,"_id":30},{"projeto":"Logística e Apoio","tipo":"Aquisição","descricao":"Aquisição de insumos para impressoras.","qtd":"","unidade":"","valorUnit":20000,"valorTotal":20000,"sei":"","pacont":"Sim","dlDfd":"","dlEtp":"","dlTr":"","progOrc":0,"tipoOrc":"Eleições","dfd":"","etpTr":"","empenho":"","valorContratado":0,"valorExecutado":0,"_id":31},{"projeto":"Logística e Apoio","tipo":"Serviços","descricao":"Serviço extraordinário realizado por funcionários da empresa de manutenção predial (Eleições 2026).","qtd":"","unidade":"","valorUnit":60000,"valorTotal":60000,"sei":"","pacont":"Sim","dlDfd":"","dlEtp":"","dlTr":"","progOrc":0,"tipoOrc":"Eleições","dfd":"","etpTr":"","empenho":"","valorContratado":0,"valorExecutado":0,"_id":32},{"projeto":"Auditoria de Urnas","tipo":"Serviços","descricao":"Contratação de empresa de filmagem  Para a Auditoria de Urnas Eletrônicas.","qtd":"","unidade":"","valorUnit":0,"valorTotal":0,"sei":"","pacont":"Sim","dlDfd":"","dlEtp":"","dlTr":"","progOrc":0,"tipoOrc":"Eleições","dfd":"","etpTr":"","empenho":"","valorContratado":0,"valorExecutado":0,"_id":33},{"projeto":"Auditoria de Urnas","tipo":"Serviços","descricao":"Contratação de empresa de vigilância armada (realização de aditivo ao contrato da empresa terceirizada) para a Auditoria de Urnas Eletrônicas.","qtd":"","unidade":"","valorUnit":0,"valorTotal":0,"sei":"","pacont":"Sim","dlDfd":"","dlEtp":"","dlTr":"","progOrc":0,"tipoOrc":"Eleições","dfd":"","etpTr":"","empenho":"","valorContratado":0,"valorExecutado":0,"_id":34},{"numero":"—","nome":"—","fornecedor":"—","valor":0,"status":"Vigente","vencimento":"","projeto":"Logística e Apoio","_id":35},{"numero":"—","nome":"—","fornecedor":"—","valor":0,"status":"Vigente","vencimento":"","projeto":"Logística e Apoio","_id":36},{"numero":"—","nome":"—","fornecedor":"—","valor":0,"status":"Vigente","vencimento":"","projeto":"Logística e Apoio","_id":37},{"numero":"—","nome":"—","fornecedor":"—","valor":0,"status":"Vigente","vencimento":"","projeto":"Logística e Apoio","_id":38},{"numero":"—","nome":"—","fornecedor":"—","valor":0,"status":"Vigente","vencimento":"","projeto":"Logística e Apoio","_id":39},{"numero":"—","nome":"—","fornecedor":"—","valor":0,"status":"Vigente","vencimento":"","projeto":"Logística e Apoio","_id":40},{"numero":"—","nome":"—","fornecedor":"—","valor":0,"status":"Vigente","vencimento":"","projeto":"Auditoria de Urnas","_id":41},{"numero":"—","nome":"—","fornecedor":"—","valor":0,"status":"Vigente","vencimento":"","projeto":"Auditoria de Urnas","_id":42}],"okrs":[{"objetivo":"Realizar Eleições tranquilas, de forma ágil, transparente e eficiente.","pct":0,"krs":[{"kr":"Atingir 100% de cobertura na divulgação e ciência das diretrizes de conduta do TSE junto à magistratura e ao corpo de servidores do TRE-PB.","meta":100,"atual":0,"unidade":"%"},{"kr":"Limitar o índice de atendimentos com agendamento postergado para no máximo X% do total de atendimentos realizados nas zonas eleitorais.","meta":100,"atual":0,"unidade":"%"},{"kr":"Atingir X% de participação dos canais digitais (TituloNet) no total de atendimentos eleitorais realizados.","meta":100,"atual":0,"unidade":"%"},{"kr":"Alcançar 100% de Presidentes de Mesa e 1ºs Mesários das Eleições 2026 treinados presencialmente.","meta":100,"atual":0,"unidade":"%"},{"kr":"Atingir 100% de mesários e auxiliares com pagamento do auxílio alimentação realizado exclusivamente por meio eletrônico (Pix).","meta":100,"atual":0,"unidade":"%"},{"kr":"Obter, no mínimo, 80% de mesários e auxiliares eleitorais das Eleições Gerais 2026 convocados e com aceite de convocação registrado por meio do sistema MEZAP.","meta":80,"atual":0,"unidade":"%"},{"kr":"Instalar PCT em 100% dos locais de votação cujo tempo de deslocamento até o cartório, ou até PCT mais próximo, seja superior a 1 hora e/ou locais de votação possuam mais de 10 seções eleitorais.","meta":100,"atual":0,"unidade":"%"},{"kr":"Totalizar 100% das seções eleitorais até às 24h00 do domingo, com monitoramento por zona eleitoral.","meta":100,"atual":0,"unidade":"%"}]}],"alertas":[{"tipo":"critico","icone":"🚨","titulo":"Todos os projetos que exigem contratação devem preencher as informações na Planilha Centralizada..","desc":"Alimentar a planilha centralizada com as informações das colunas. \nLink: https://docs.google.com/spreadsheets/d/1XHQVWUtWyZMauznM_TCXY2GNgQUucJIKDca5KBnUIbs/edit?usp=sharing","data":"13/03/2026"},{"tipo":"info","icone":"ℹ️","titulo":"Registro de Candidatura: RC1.1 sem prazo.","desc":"RC 1.1 Definição de cronograma de atividades com base no Calendário Eleitoral. (já foi definido? Uma vez que o calendário foi publicado)","data":"13/03/2026"},{"tipo":"info","icone":"ℹ️","titulo":"Logística: RC1 sem prazo e sem detalhamento.","desc":"Sugere-se a inclusão das ações que vem sendo empreendidas para as contratações a fim de demonstrar a execução do projeto.","data":"13/03/2026"},{"tipo":"atencao","icone":"⚠️","titulo":"Segurança: RC1 e RC2 sem andamento.","desc":"RC1. Identificação dos locais e fases críticas (início 03/fev)\nRC2. Identificação das necessidades de segurança institucional (início 03/fev).\nOs dois RCs estão com status \"não iniciado\".","data":"13/03/2026"},{"tipo":"critico","icone":"🚨","titulo":"Auditoria de Urnas: RC 3.1 em atraso","desc":"RC3.1. Solicitar disponibilização de local para realização da auditoria.","data":"13/03/2026"},{"tipo":"info","icone":"ℹ️","titulo":"Plano de Comunicação das Eleições: Inclusão das ações de comunicação no Notion","desc":"Sugere-se incluir nos RCs as ações de comunicação que já vem sendo realizadas a fim de demonstrar a execução do projeto.","data":"13/03/2026"}]};
+document.addEventListener("DOMContentLoaded", function(){
+  var d = window.__EXP__; if(!d) return;
+  state.projetos  = d.projetos;
+  state.orcamento = d.orcamento;
+  state.contratos = d.contratos;
+  state.okrs      = d.okrs;
+  state.alertas   = d.alertas;
+  if(typeof garantirIds==="function") garantirIds();
+  if(typeof renderAll==="function") renderAll();
+});
+</script>
+</body>
+</html>
